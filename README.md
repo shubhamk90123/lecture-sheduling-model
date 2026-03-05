@@ -1,0 +1,1 @@
+# lecture-sheduling-model
