@@ -1,3 +1,6 @@
+//Core modules
+const path = require("path");
+
 //External modules
 const express = require("express");
 const app = express();
@@ -14,12 +17,19 @@ const { instructorRouter } = require("./routes/instructorRouter");
 // BODY PARSER -
 app.use(express.urlencoded({ extended: true }));
 
+// Static files
+app.use(express.static(path.join(rootdir, "public")));
+
 // Routers
 app.use("/admin", adminRouter);
 app.use("/instructor", instructorRouter);
 
 // Routes
 app.get("/", (req, res) => {
+  res.render("signup");
+});
+
+app.get("/login", (req, res) => {
   res.render("login");
 });
 
