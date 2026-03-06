@@ -7,7 +7,7 @@ const instructorRouter = express.Router();
 
 instructorRouter.post("/dashboard", (req, res) => {
   console.log(req.body, req.method);
-  res.sendFile(path.join(__dirname, "../views/instructor/dashboard.html"));
+  res.render("instructor/dashboard");
 });
 
-module.exports = instructorRouter;
+exports.instructorRouter = instructorRouter;

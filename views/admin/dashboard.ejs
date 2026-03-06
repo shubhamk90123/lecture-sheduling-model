@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/adminDashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  </head>
+
+  <body>
+
+    <div class="sidebar">
+
+      <h2>Lecture Scheduler</h2>
+
+      <ul>
+        <li><i class="fa fa-home"></i> Dashboard</li>
+        <li><i class="fa fa-book"></i> Courses</li>
+        <li><i class="fa fa-users"></i> Instructors</li>
+        <li><i class="fa fa-calendar"></i> Manage Lectures</li>
+        <li><i class="fa fa-sign-out"></i> Logout</li>
+      </ul>
+
+    </div>
+
+    <div class="main">
+
+      <div class="topbar">
+        <h1>Admin Dashboard</h1>
+        <div class="profile">
+          Welcome, Admin
+          <i class="fa fa-user-circle"></i>
+        </div>
+      </div>
+
+      <div class="cards">
+
+        <div class="card">
+          <h3>Total Courses</h3>
+          <p>8</p>
+        </div>
+
+        <div class="card">
+          <h3>Total Instructors</h3>
+          <p>5</p>
+        </div>
+
+        <div class="card">
+          <h3>Scheduled Lectures</h3>
+          <p>12</p>
+        </div>
+
+      </div>
+
+      <div class="tables">
+
+        <div class="table-box">
+          <div class="table-header">
+            <h3>Courses List</h3>
+            <button>Add Course</button>
+          </div>
+
+          <table>
+            <tr>
+              <th>Course Name</th>
+              <th>Level</th>
+            </tr>
+
+            <tr>
+              <td>Web Development</td>
+              <td>Beginner</td>
+            </tr>
+
+            <tr>
+              <td>Data Science</td>
+              <td>Intermediate</td>
+            </tr>
+
+            <tr>
+              <td>Cyber Security</td>
+              <td>Advanced</td>
+            </tr>
+
+          </table>
+
+        </div>
+
+        <div class="table-box">
+
+          <div class="table-header">
+            <h3>Instructors List</h3>
+            <button>View All Instructors</button>
+          </div>
+
+          <table>
+
+            <tr>
+              <th>Instructor</th>
+              <th>Email</th>
+            </tr>
+
+            <tr>
+              <td>John Doe</td>
+              <td>john@example.com</td>
+            </tr>
+
+            <tr>
+              <td>Jane Smith</td>
+              <td>jane@example.com</td>
+            </tr>
+
+            <tr>
+              <td>Mike Johnson</td>
+              <td>mike@example.com</td>
+            </tr>
+
+          </table>
+
+        </div>
+
+      </div>
+
+      <div class="table-box full">
+
+        <div class="table-header">
+          <h3>Scheduled Lectures</h3>
+          <button>Schedule Lecture</button>
+        </div>
+
+        <table>
+
+          <tr>
+            <th>Course</th>
+            <th>Instructor</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+
+          <tr>
+            <td>Data Science</td>
+            <td>John Doe</td>
+            <td>June 15, 2024</td>
+            <td>
+              <button class="edit">Edit</button>
+              <button class="delete">Delete</button>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Web Development</td>
+            <td>Jane Smith</td>
+            <td>June 18, 2024</td>
+            <td>
+              <button class="edit">Edit</button>
+              <button class="delete">Delete</button>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Cyber Security</td>
+            <td>Mike Johnson</td>
+            <td>June 22, 2024</td>
+            <td>
+              <button class="edit">Edit</button>
+              <button class="delete">Delete</button>
+            </td>
+          </tr>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </body>
+
+</html>

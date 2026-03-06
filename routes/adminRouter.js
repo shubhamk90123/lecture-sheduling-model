@@ -7,7 +7,7 @@ const adminRouter = express.Router();
 
 adminRouter.post("/dashboard", (req, res) => {
   console.log(req.body, req.method);
-  res.sendFile(path.join(__dirname, "../views/admin/dashboard.html"));
+  res.render("admin/dashboard");
 });
 
-module.exports = adminRouter;
+exports.adminRouter = adminRouter;
