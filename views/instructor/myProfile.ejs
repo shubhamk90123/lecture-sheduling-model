@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor Profile</title>
+    <link rel="stylesheet" href="/css/myProfile.css">
+  </head>
+
+  <body>
+
+    <div class="profile-container">
+
+      <h2>My Profile</h2>
+
+      <form action="/instructor/dashboard" method="POST">
+
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" name="name" value="John Smith">
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" value="john@example.com">
+        </div>
+
+        <div class="form-group">
+          <label>Specialization</label>
+          <input type="text" name="specialization" value="Web Development">
+        </div>
+
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="text" name="phone" value="+91 9876543210">
+        </div>
+
+        <div class="form-group">
+          <label>Change Password</label>
+          <input type="password" name="password" placeholder="Enter new password">
+        </div>
+
+        <button type="submit">Update Profile</button>
+
+      </form>
+
+    </div>
+
+  </body>
+
+</html>

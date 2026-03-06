@@ -29,6 +29,11 @@ app.get("/", (req, res) => {
   res.render("signup");
 });
 
+app.post("/login", (req, res) => {
+  console.log(req.body, req.method);
+  res.render("login");
+});
+
 app.get("/login", (req, res) => {
   res.render("login");
 });

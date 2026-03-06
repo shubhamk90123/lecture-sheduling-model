@@ -1,22 +1,25 @@
 //External Modules
 const express = require("express");
 const adminRouter = express.Router();
+const {
+  getDashboard,
+  postDashboard,
+  addCourse,
+  viewInstructor,
+  allCources,
+  manageLec,
+} = require("../controller/adminController");
 
-adminRouter.post("/dashboard", (req, res) => {
-  console.log(req.body, req.method);
-  res.render("admin/dashboard");
-});
+adminRouter.get("/dashboard", getDashboard);
 
-adminRouter.get("/add-course", (req, res) => {
-  res.render("admin/addCourse");
-});
+adminRouter.post("/dashboard", postDashboard);
 
-adminRouter.get("/viewInstructors", (req, res) => {
-  res.render("admin/viewInstructors");
-});
+adminRouter.get("/add-course", addCourse);
 
-adminRouter.get("/viewCourses", (req, res) => {
-  res.render("admin/allCourses");
-});
+adminRouter.get("/viewInstructors", viewInstructor);
+
+adminRouter.get("/viewCourses", allCources);
+
+adminRouter.get("/manageLecture", manageLec);
 
 exports.adminRouter = adminRouter;
