@@ -4,27 +4,35 @@ const path = require("path");
 //External modules
 const express = require("express");
 const app = express();
+
 const rootdir = require("./utils/path");
 
-//Local module
+//Local modules
 const adminRouter = require("./routes/adminRouter");
 const instructorRouter = require("./routes/instructorRouter");
 
+// BODY PARSER -
+app.use(express.urlencoded({ extended: true }));
+
+// Static files
 app.use(express.static(path.join(rootdir, "public")));
 
+// Routers
 app.use("/admin", adminRouter);
 app.use("/instructor", instructorRouter);
 
-app.use("/", (req, res, next) => {
-  console.log(req.body, req.method);
+// Routes
+app.get("/login", (req, res) => {
   res.sendFile(path.join(rootdir, "views/login.html"));
-  // res.send(`<h1>Home page</h1>
-  //   <a href='/admin'>Admin</a><br>
-  //   <a href='/instructor'>Instructor</a>`);
+});
+
+app.post("/login", (req, res) => {
+  console.log(req.body);
+  res.sendFile(path.join(rootdir, "views/login.html"));
 });
 
 const port = 3000;
 
 app.listen(port, () => {
-  console.log(`Server is running on port http://localhost:${port}`);
+  console.log(`Server running on http://localhost:${port}`);
 });

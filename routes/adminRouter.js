@@ -1,10 +1,13 @@
-const exress = require("express");
-const adminRouter = exress.Router();
+//core modules
+const path = require("path");
 
-adminRouter.get("/", (req, res) => {
-  res.send(` <h1>go to Instructor page </h1>
-    <a href='/instructor'>Instructor</a>
-    <a href='/'>Home</a>`);
+//External Modules
+const express = require("express");
+const adminRouter = express.Router();
+
+adminRouter.post("/dashboard", (req, res) => {
+  console.log(req.body, req.method);
+  res.sendFile(path.join(__dirname, "../views/admin/dashboard.html"));
 });
 
 module.exports = adminRouter;
