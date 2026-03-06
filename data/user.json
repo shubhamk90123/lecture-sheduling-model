@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Adity kapoor ",
+    "email": "Adity@gmail.com",
+    "password": "Adi@123",
+    "role": "admin"
+  },
+  {
+    "id": 2,
+    "name": "Rahul Sharma",
+    "email": "Rahul@gmail.com",
+    "password": "Rahul#123",
+    "role": "instructor"
+  },
+  {
+    "id": 3,
+    "name": "Sara Goel",
+    "email": "sara@gmail.com",
+    "password": "Sara@321",
+    "role": "instructor"
+  }
+]

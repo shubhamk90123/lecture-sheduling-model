@@ -13,6 +13,7 @@ const rootdir = require("./utils/path");
 //Local modules
 const { adminRouter } = require("./routes/adminRouter");
 const { instructorRouter } = require("./routes/instructorRouter");
+const { pageRoute } = require("./routes/pageRoute");
 
 // BODY PARSER -
 app.use(express.urlencoded({ extended: true }));
@@ -23,19 +24,11 @@ app.use(express.static(path.join(rootdir, "public")));
 // Routers
 app.use("/admin", adminRouter);
 app.use("/instructor", instructorRouter);
+app.use("/", pageRoute);
 
 // Routes
 app.get("/", (req, res) => {
-  res.render("signup");
-});
-
-app.post("/login", (req, res) => {
-  console.log(req.body, req.method);
-  res.render("login");
-});
-
-app.get("/login", (req, res) => {
-  res.render("login");
+  res.render("rootPage");
 });
 
 const port = 3000;

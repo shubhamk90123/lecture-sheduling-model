@@ -1,8 +1,10 @@
-//core modules
-const path = require("path");
+
 
 //External modules
 const express = require("express");
+const instructorRouter = express.Router();
+
+//Local Modules
 const {
   getDashboard,
   postDashboard,
@@ -10,7 +12,7 @@ const {
   updateProfile,
   lectures,
 } = require("../controller/instructorContolller");
-const instructorRouter = express.Router();
+
 
 instructorRouter.get("/dashboard", getDashboard);
 

@@ -1,3 +1,9 @@
+// const fs = require("fs");
+// const path = require("path");
+
+// const filePath = path.join(__dirname, "../data/admin.json");
+// const users = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+
 exports.getDashboard = (req, res) => {
   res.render("admin/dashboard");
 };
