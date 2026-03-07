@@ -25,6 +25,7 @@ exports.getaddCourse = (req, res) => {
 
 exports.postaddCourse = (req, res) => {
   console.log(req.body);
+  const { courseNmae, courseCode, instructor, duration, startDate } = req.body;
   courseData.push(req.body);
   res.render("admin/addCourse");
   console.log(courseData);
@@ -35,7 +36,7 @@ exports.viewInstructor = (req, res) => {
 };
 
 exports.allCources = (req, res) => {
-  res.render("admin/allCourses");
+  res.render("admin/allCourses", { courseData });
 };
 
 exports.manageLec = (req, res) => {
