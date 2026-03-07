@@ -14,6 +14,7 @@ const rootdir = require("./utils/path");
 const { adminRouter } = require("./routes/adminRouter");
 const { instructorRouter } = require("./routes/instructorRouter");
 const { pageRoute } = require("./routes/pageRoute");
+const { arr } = require("./controller/pageController");
 
 // BODY PARSER -
 app.use(express.urlencoded({ extended: true }));
@@ -29,10 +30,11 @@ app.use("/", pageRoute);
 // Routes
 app.get("/", (req, res) => {
   res.render("rootPage");
+  console.log(arr);
 });
 
 app.use((req, res, next) => {
-  res.render("404");
+  res.status(404).render("404");
 });
 
 const port = 3000;

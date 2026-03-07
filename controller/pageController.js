@@ -12,7 +12,10 @@ exports.getSignup = (req, res) => {
 
 exports.postSignup = (req, res) => {
   console.log(req.body, req.method);
+  const { name, email, password, role } = req.body;
+  arr.push(req.body);
   res.redirect("/login");
+  console.log(arr);
 };
 
 exports.getLogin = (req, res) => {
@@ -21,11 +24,8 @@ exports.getLogin = (req, res) => {
 
 exports.postLogin = (req, res) => {
   console.log(req.body, req.method);
-  const { name, email, password, role } = req.body;
-
-  arr.push(req.body);
 
   res.render("login");
-
-  console.log(arr);
 };
+
+exports.arr = arr

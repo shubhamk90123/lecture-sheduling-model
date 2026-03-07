@@ -1,46 +1,116 @@
+/* ===== THEME COLORS (CHANGE THESE) ===== */
+:root {
+  --primary: #4f46e5;
+  --secondary: #6366f1;
+  --background: #0f172a;
+  --text: #ffffff;
+}
+
+/* ===== PAGE LAYOUT ===== */
+
 body {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
-  background: #777;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  color: var(--text);
+  overflow: hidden;
 }
 
 .container {
-  background: white;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-h1 {
-  font-size: 80px;
-  margin: 0;
-  color: #ff4d4d;
+/* ===== ANIMATED 404 ===== */
+
+.error-number {
+  font-size: 120px;
+  font-weight: bold;
+  letter-spacing: 10px;
+  color: var(--primary);
+  animation: float 3s ease-in-out infinite;
+  text-shadow: 0 0 20px var(--secondary);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 h2 {
-  margin: 10px 0;
-  color: #333;
+  margin-top: 10px;
+  font-size: 28px;
 }
 
 p {
-  color: #777;
-  margin-bottom: 20px;
+  color: #cbd5f5;
+  margin-bottom: 30px;
 }
+
+/* ===== BUTTON ===== */
 
 a {
   text-decoration: none;
-  background: #1d4ed8;
+  background: var(--primary);
   color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: 0.3s;
 }
 
 a:hover {
-  background: #0056b3;
+  background: var(--secondary);
+  transform: scale(1.05);
+}
+
+/* ===== BACKGROUND ANIMATION ===== */
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--secondary);
+  opacity: 0.15;
+  animation: move 15s linear infinite;
+}
+
+.circle:nth-child(1) {
+  width: 200px;
+  height: 200px;
+  left: 10%;
+  top: 20%;
+}
+
+.circle:nth-child(2) {
+  width: 300px;
+  height: 300px;
+  right: 10%;
+  bottom: 10%;
+}
+
+@keyframes move {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-50px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
