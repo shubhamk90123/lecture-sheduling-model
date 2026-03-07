@@ -6,7 +6,7 @@ const {
   postDashboard,
   getaddCourse,
   viewInstructor,
-  allCources,
+  allCourses,
   manageLec,
   postaddCourse,
 } = require("../controller/adminController");
@@ -17,11 +17,11 @@ adminRouter.post("/dashboard", postDashboard);
 
 adminRouter.get("/add-course", getaddCourse);
 
-adminRouter.get("/add-course", postaddCourse);
+adminRouter.post("/add-course", postaddCourse);
 
 adminRouter.get("/viewInstructors", viewInstructor);
 
-adminRouter.get("/viewCourses", allCources);
+adminRouter.get("/viewCourses", allCourses);
 
 adminRouter.get("/manageLecture", manageLec);
 

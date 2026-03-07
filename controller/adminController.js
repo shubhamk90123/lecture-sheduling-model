@@ -12,11 +12,7 @@ exports.getDashboard = (req, res) => {
 
 exports.postDashboard = (req, res) => {
   console.log(req.body, req.method);
-  res.render("admin/dashboard");
-};
-
-exports.getDashboard = (req, res) => {
-  res.render("admin/dashboard");
+  res.redirect("/admin/dashboard");
 };
 
 exports.getaddCourse = (req, res) => {
@@ -24,18 +20,28 @@ exports.getaddCourse = (req, res) => {
 };
 
 exports.postaddCourse = (req, res) => {
-  console.log(req.body);
-  const { courseNmae, courseCode, instructor, duration, startDate } = req.body;
-  courseData.push(req.body);
-  res.render("admin/addCourse");
-  console.log(courseData);
+  const { courseName, courseCode, instructor, duration, startDate } = req.body;
+
+  if (!courseName || !courseCode || !instructor) {
+    return res.status(400).render("admin/addCourse");
+  }
+
+  courseData.push({
+    courseName: courseName.trim(),
+    courseCode: courseCode.trim(),
+    instructor: instructor.trim(),
+    duration: duration ? duration.trim() : "",
+    startDate: startDate || "",
+  });
+
+  return res.redirect("/admin/viewCourses");
 };
 
 exports.viewInstructor = (req, res) => {
   res.render("admin/viewInstructors");
 };
 
-exports.allCources = (req, res) => {
+exports.allCourses = (req, res) => {
   res.render("admin/allCourses", { courseData });
 };
 

@@ -88,3 +88,25 @@ background:#059669;
 .delete:hover{
 background:#dc2626;
 }
+
+.dashboard {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.dashboard a {
+  display: inline-block;
+  padding: 10px 15px;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  transition: background 0.2s ease;
+}
+
+.dashboard a:hover {
+  background: #512da8;
+}

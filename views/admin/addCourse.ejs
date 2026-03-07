@@ -14,7 +14,7 @@
 
       <h2>Add New Course</h2>
 
-      <form action="/admin/dashboard" method="POST">
+      <form action="/admin/add-course" method="POST">
 
         <div class="form-group">
           <label>Course Name</label>
@@ -38,15 +38,15 @@
 
         <div class="form-group">
           <label>Course Duration</label>
-          <input type="text" name="duration" placeholder="Example: 3 Months">
+          <input type="text" name="duration" placeholder="Example: 3 Months" required>
         </div>
 
         <div class="form-group">
           <label>Start Date</label>
-          <input type="date" name="startDate">
+          <input type="date" name="startDate" required>
         </div>
 
-        
+
 
         <button type="submit">Add Course</button>
 

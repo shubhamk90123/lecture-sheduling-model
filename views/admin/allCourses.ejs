@@ -24,9 +24,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-
-            <% courseData.forEach((course, idx)=> { %>
+          <% courseData.forEach((course, idx)=> { %>
+            <tr>
               <td>
                 <%= idx + 1 %>
               </td>
@@ -49,11 +48,16 @@
                 <button class="edit">edit</button>
                 <button class="delete"> Delete</button>
               </td>
-              <% }); %>
-          </tr>
+            </tr>
+            <% }); %>
         </tbody>
       </table>
+      <div class="dashboard">
+        <a href="/admin/dashboard" >GO TO DASHBOARD</a>
+      </div>
+
     </div>
+
   </body>
 
 </html>
