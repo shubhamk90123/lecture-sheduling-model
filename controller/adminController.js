@@ -4,6 +4,8 @@
 // const filePath = path.join(__dirname, "../data/admin.json");
 // const users = JSON.parse(fs.readFileSync(filePath, "utf-8"));
 
+const courseData = [];
+
 exports.getDashboard = (req, res) => {
   res.render("admin/dashboard");
 };
@@ -17,8 +19,15 @@ exports.getDashboard = (req, res) => {
   res.render("admin/dashboard");
 };
 
-exports.addCourse = (req, res) => {
+exports.getaddCourse = (req, res) => {
   res.render("admin/addCourse");
+};
+
+exports.postaddCourse = (req, res) => {
+  console.log(req.body);
+  courseData.push(req.body);
+  res.render("admin/addCourse");
+  console.log(courseData);
 };
 
 exports.viewInstructor = (req, res) => {
@@ -32,3 +41,5 @@ exports.allCources = (req, res) => {
 exports.manageLec = (req, res) => {
   res.render("admin/manageLec");
 };
+
+exports.courseData = courseData;

@@ -4,17 +4,20 @@ const adminRouter = express.Router();
 const {
   getDashboard,
   postDashboard,
-  addCourse,
+  getaddCourse,
   viewInstructor,
   allCources,
   manageLec,
+  postaddCourse,
 } = require("../controller/adminController");
 
 adminRouter.get("/dashboard", getDashboard);
 
 adminRouter.post("/dashboard", postDashboard);
 
-adminRouter.get("/add-course", addCourse);
+adminRouter.get("/add-course", getaddCourse);
+
+adminRouter.get("/add-course", postaddCourse);
 
 adminRouter.get("/viewInstructors", viewInstructor);
 

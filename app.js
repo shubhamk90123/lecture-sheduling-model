@@ -30,7 +30,7 @@ app.use("/", pageRoute);
 // Routes
 app.get("/", (req, res) => {
   res.render("rootPage");
-  console.log(arr);
+  //console.log(arr);
 });
 
 app.use((req, res, next) => {
