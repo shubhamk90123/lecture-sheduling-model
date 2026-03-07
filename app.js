@@ -31,6 +31,10 @@ app.get("/", (req, res) => {
   res.render("rootPage");
 });
 
+app.use((req, res, next) => {
+  res.render("404");
+});
+
 const port = 3000;
 
 app.listen(port, () => {
