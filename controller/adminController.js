@@ -1,13 +1,20 @@
-// const fs = require("fs");
-// const path = require("path");
+//Core Module
+const fs = require("fs");
+const path = require("path");
 
-// const filePath = path.join(__dirname, "../data/admin.json");
+const rootdir = require("../utils/path");
+
+const filePath = path.join(__dirname, "../data/admin.json");
 // const users = JSON.parse(fs.readFileSync(filePath, "utf-8"));
 
+//Local Module (Importing user data from page controller)
+const { userData } = require("./pageController");
+
 const courseData = [];
+const courseDataPath = path.join(rootdir, "data", "courseData.json");
 
 exports.getDashboard = (req, res) => {
-  res.render("admin/dashboard");
+  res.render("admin/dashboard", { instructors, courseData });
 };
 
 exports.postDashboard = (req, res) => {
@@ -37,8 +44,12 @@ exports.postaddCourse = (req, res) => {
   return res.redirect("/admin/viewCourses");
 };
 
+const instructors = userData.filter(
+  (user) => user.role && user.role.toLowerCase() === "instructor",
+);
+
 exports.viewInstructor = (req, res) => {
-  res.render("admin/viewInstructors");
+  res.render("admin/viewInstructors", { instructors });
 };
 
 exports.allCourses = (req, res) => {

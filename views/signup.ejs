@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="/css/signup.css">
+    <link rel="stylesheet" href="/css/pageCss/signup.css">
   </head>
 
   <body>
@@ -14,7 +14,7 @@
 
       <h2>Create Account</h2>
 
-      <form action="/login" method="POST">
+      <form action="/signup" method="POST">
 
         <div class="input-group">
           <label>Full Name</label>
@@ -39,13 +39,33 @@
         <div class="input-group">
           <label>Role</label>
 
-          <select name="role" required>
+          <select name="role" id="roleSelect" required>
             <option value="">Select Role</option>
             <option value="admin">Admin</option>
             <option value="instructor">Instructor</option>
           </select>
 
         </div>
+
+
+        <div class="input-group" id="specializationGroup">
+          <label>Specialization</label>
+          <select name="specialization" id="specializationSelect" required>
+            <option value="">Select The Subject</option>
+            <option value="Web Development">Web Development</option>
+            <option value="Data Science">Data Science</option>
+            <option value="Cyber Security">Cyber Security</option>
+            <option value="DBMS">DBMS</option>
+            <option value="Green Computing">Green Computing</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label>Contact details</label>
+          <input type="tel" name="contact" placeholder="Enter 10 digit phone number" required>
+        </div>
+
+
 
         <button type="submit">Sign Up</button>
 
@@ -57,7 +77,7 @@
       </form>
 
     </div>
-
+    <script src="/js/pageJs/signUp.js"></script>
   </body>
 
 </html>

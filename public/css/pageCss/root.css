@@ -48,13 +48,14 @@ a {
   color: #2563eb;
 }
 
+.login-btn:hover {
+  background-color: #2563eb;
+  color: #fff;
+}
+
 .signup-btn {
   background: #10b981;
   color: white;
-}
-
-.login-btn:hover {
-  background: #e5e7eb;
 }
 
 .signup-btn:hover {

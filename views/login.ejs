@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/pageCss/login.css">
     <title>Modern Login Page</title>
   </head>
 
@@ -16,27 +16,26 @@
           <h1>Admin Login</h1>
           <input type="email" name="email" placeholder="Email" required>
           <input type="password" name="password" placeholder="Password" required>
+          <input type="text" name="role" placeholder="Enter your role" required>
           <button type="submit">Sign In</button>
-          <hr>
-          <hr>
+          <hr />
           <p>Sign up if you are new</p>
           <a href="/signup">Sign Up</a>
         </form>
-
-
       </div>
+
       <div class="form-container sign-in">
         <form action="/instructor/dashboard" method="POST">
           <h1>Instructor Login</h1>
           <input type="email" name="email" placeholder="Email" required>
           <input type="password" name="password" placeholder="Password" required>
+          <input type="text" name="role" placeholder="Enter You Role">
           <button type="submit">Sign In</button>
-          <hr>
-          <hr>
+          <hr />
           <p>Sign up if you are new</p>
           <a href="/signup">Sign Up</a>
-        </form>
       </div>
+      </form>
       <div class="toggle-container">
         <div class="toggle">
           <div class="toggle-panel toggle-left">
@@ -52,7 +51,7 @@
         </div>
       </div>
     </div>
-    <script src="/js/login.js"></script>
+    <script src="/js/pageJs/login.js"></script>
   </body>
 
 </html>

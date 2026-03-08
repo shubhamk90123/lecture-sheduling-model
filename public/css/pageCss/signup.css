@@ -10,8 +10,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-background: linear-gradient(to right, #e2e2e2, #c9d6ff);
-
+  background: linear-gradient(to right, #e2e2e2, #c9d6ff);
 }
 
 .signup-container {
@@ -28,7 +27,7 @@ background: linear-gradient(to right, #e2e2e2, #c9d6ff);
 }
 
 .input-group {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .input-group label {
@@ -54,6 +53,7 @@ button {
   border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
+  margin-top: 5px;
 }
 
 .login-link {
@@ -62,7 +62,11 @@ button {
   font-size: 14px;
 }
 
-a{
+a {
   text-decoration: none;
   color: #512da8;
+}
+
+#specializationGroup {
+  display: none;
 }

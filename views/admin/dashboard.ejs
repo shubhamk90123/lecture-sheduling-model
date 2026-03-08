@@ -24,13 +24,13 @@
       </ul>
 
     </div>
-
++
     <div class="main">
 
       <div class="topbar">
         <h1>Admin Dashboard</h1>
         <div class="profile">
-          Welcome, Admin
+          <a href="">Welcome, Admin</a>
           <i class="fa fa-user-circle"></i>
         </div>
       </div>
@@ -93,28 +93,32 @@
             <h3>Instructors List</h3>
             <a href="/admin/viewInstructors">View All Instructors</a>
           </div>
-
           <table>
 
-            <tr>
-              <th>Instructor</th>
-              <th>Email</th>
-            </tr>
+            <tbody>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+              </tr>
+              <% if (!instructors || instructors.length===0) { %>
+                <tr>
+                  <td colspan="6">No instructors found</td>
+                </tr>
+                <% } %>
+                  <% instructors.forEach((ins, idx)=> { %>
+                    <tr>
 
-            <tr>
-              <td>John Doe</td>
-              <td>john@example.com</td>
-            </tr>
+                      <td>
+                        <%= ins.name %>
+                      </td>
+                      <td>
+                        <%= ins.email %>
+                      </td>
 
-            <tr>
-              <td>Jane Smith</td>
-              <td>jane@example.com</td>
-            </tr>
+                    </tr>
+                    <% }) %>
 
-            <tr>
-              <td>Mike Johnson</td>
-              <td>mike@example.com</td>
-            </tr>
+            </tbody>
 
           </table>
 

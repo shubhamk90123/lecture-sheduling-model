@@ -10,6 +10,10 @@ body {
   background: #f4f6f9;
 }
 
+hr {
+  opacity: 0.5;
+}
+
 .sidebar {
   width: 220px;
   height: full;
@@ -51,6 +55,11 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+}
+
+.topbar .profile a {
+  text-decoration: none;
+  color: #333;
 }
 
 .cards {
