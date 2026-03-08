@@ -12,5 +12,12 @@
     "instructor": "Rahul Sharma",
     "duration": "4 Months",
     "startDate": "2026-03-08"
+  },
+  {
+    "courseName": "Data Science",
+    "courseCode": "Easy",
+    "instructor": "Sara Goel",
+    "duration": "2 Hour",
+    "startDate": "2026-03-09"
   }
 ]
