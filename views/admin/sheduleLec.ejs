@@ -13,50 +13,57 @@
     <div class="container">
 
       <h2>Shedule Lecture</h2>
+      <% if (typeof errorMessage !=="undefined" && errorMessage) { %>
+        <script>alert("<%= errorMessage %>")</script>
+        <% } %>
 
-      <form action="/admin/sheduleLec" method="POST">
+          <form action="/admin/sheduleLec" method="POST">
 
-        <div class="form-group">
-          <label>Select The Course</label>
-          <select name="courseName" required>
-            <option value="">Select The Course</option>
-            <% courseData.forEach((course)=> { %>
-              <option value="<%= course.courseName %>">
-                <%= course.courseName %>
-              </option>
-              <% }) %>
-          </select>
-        </div>
+            <div class="form-group">
+              <label>Select The Course</label>
+              <select name="courseName" required>
+                <option value="">Select The Course</option>
+                <% courseData.forEach((course)=> { %>
+                  <option value="<%= course.courseName %>">
+                    <%= course.courseName %>
+                  </option>
+                  <% }) %>
+              </select>
+            </div>
 
-        <div class="form-group">
-          <label>Course Code</label>
-          <input type="text" name="courseCode" placeholder="Enter course code" required>
-        </div>
+            <div class="form-group">
+              <label>Course Level</label>
+              <select name="courseCode" required>
+                <option value="">Select The Level</option>
+                <option value="Easy">Easy</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </div>
 
-        <div class="form-group">
-          <label>Instructor</label>
-          <select name="instructor" required>
-            <option value="">Select The Instructor</option>
-            <% instructors.forEach((ins)=> { %>
-              <option value="<%= ins.name %>">
-                <%= ins.name %>
-              </option>
-              <% }) %>
-          </select>
-        </div>
+            <div class="form-group">
+              <label>Instructor</label>
+              <select name="instructor" required>
+                <option value="">Select The Instructor</option>
+                <% instructors.forEach((ins)=> { %>
+                  <option value="<%= ins.name %>">
+                    <%= ins.name %>
+                  </option>
+                  <% }) %>
+              </select>
+            </div>
 
-        <div class="form-group">
-          <label>Course Duration</label>
-          <input type="text" name="duration" placeholder="Example: 3 Months" required>
-        </div>
+            <div class="form-group">
+              <label>Course Duration</label>
+              <input type="text" name="duration" placeholder="Example: 3 Months" required>
+            </div>
 
-        <div class="form-group">
-          <label>Start Date</label>
-          <input type="date" name="startDate" required>
-        </div>
-        <button type="submit">Add Course</button>
+            <div class="form-group">
+              <label>Start Date</label>
+              <input type="date" name="startDate" required>
+            </div>
+            <button type="submit">Add Course</button>
 
-      </form>
+          </form>
 
     </div>
 

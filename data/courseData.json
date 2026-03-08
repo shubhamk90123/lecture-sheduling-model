@@ -1,26 +1,26 @@
 [
   {
     "courseName": "Web Development",
-    "courseCode": "Web Dev",
+    "courseCode": "Hard",
     "instructor": "Adity kapoor",
     "duration": "3 Month",
     "startDate": "2026-03-08"
   },
   {
     "courseName": "Data Science",
-    "courseCode": "Data Science",
+    "courseCode": "Easy",
     "duration": "4 Months",
     "startDate": "2026-03-08"
   },
   {
     "courseName": "DBMS",
-    "courseCode": "dbms",
+    "courseCode": "Hard",
     "duration": "4 Months",
     "startDate": "2026-03-08"
   },
   {
     "courseName": "Green Computing",
-    "courseCode": "computing",
+    "courseCode": "Easy",
     "duration": "4 Months",
     "startDate": "2026-03-08"
   }

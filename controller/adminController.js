@@ -38,6 +38,7 @@ const getInstructors = () =>
     (user) => user.role && user.role.toLowerCase() === "instructor",
   );
 
+//Admin Dashboard---------------------------------------------------------------------------------------------------------------------------
 exports.getDashboard = (req, res) => {
   const instructors = getInstructors();
 
@@ -56,6 +57,7 @@ exports.postDashboard = (req, res) => {
   res.redirect("/admin/dashboard");
 };
 
+//Add Course----------------------------------------------------------------------------------------------------------------------------------
 exports.getaddCourse = (req, res) => {
   const instructors = getInstructors();
   res.render("admin/addCourse", { instructors });
@@ -85,22 +87,30 @@ exports.postaddCourse = (req, res) => {
   return res.redirect("/admin/viewCourses");
 };
 
+//Manage Instructors---------------------------------------------------------------------------------------------------------------------------
 exports.viewInstructor = (req, res) => {
   const instructors = getInstructors();
   res.render("admin/viewInstructors", { instructors });
 };
 
+//All Courses-----------------------------------------------------------------------------------------------------------------------------------
 exports.allCourses = (req, res) => {
   res.render("admin/allCourses", { courseData });
 };
 
+//Manage Lectures------------------------------------------------------------------------------------------------------------------------------
 exports.manageLec = (req, res) => {
-  res.render("admin/manageLec");
+  res.render("admin/manageLec", { lectureData });
 };
 
+//Shedule Lectures-----------------------------------------------------------------------------------------------------------------------------
 exports.getSheduleLec = (req, res) => {
   const instructors = getInstructors();
-  res.render("admin/sheduleLec", { instructors, courseData });
+  res.render("admin/sheduleLec", {
+    instructors,
+    courseData,
+    errorMessage: "",
+  });
 };
 
 exports.postSheduleLec = (req, res) => {
@@ -115,9 +125,29 @@ exports.postSheduleLec = (req, res) => {
     !duration?.trim() ||
     !startDate
   ) {
-    return res
-      .status(400)
-      .render("admin/sheduleLec", { instructors, courseData });
+    return res.status(400).render("admin/sheduleLec", {
+      instructors,
+      courseData,
+      errorMessage: "Please fill all required fields.",
+    });
+  }
+
+  const normalizedInstructor = instructor.trim().toLowerCase();
+  const normalizedDate = startDate;
+  const isBusy = lectureData.some(
+    (lec) =>
+      lec.instructor &&
+      lec.startDate &&
+      lec.instructor.trim().toLowerCase() === normalizedInstructor &&
+      lec.startDate === normalizedDate,
+  );
+
+  if (isBusy) {
+    return res.status(409).render("admin/sheduleLec", {
+      instructors,
+      courseData,
+      errorMessage: "Instructor is busy on this day. Try another day.",
+    });
   }
 
   lectureData.push({
