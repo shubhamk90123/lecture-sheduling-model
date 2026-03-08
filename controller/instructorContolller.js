@@ -25,17 +25,32 @@ const getInstructors = () =>
     (user) => user.role && user.role.toLowerCase() === "instructor",
   );
 
+const getAssignedLectures = (currentUserName = "") => {
+  const normalizedName = (currentUserName || "").trim().toLowerCase();
+
+  if (!normalizedName) {
+    return [];
+  }
+
+  return lectureData.filter(
+    (lec) =>
+      lec.instructor &&
+      lec.instructor.trim().toLowerCase() === normalizedName,
+  );
+};
+
 const getDashboardData = (currentUserName = "User") => {
   const instructors = getInstructors();
+  const assignedLectures = getAssignedLectures(currentUserName);
 
   return {
     currentUserName,
     instructors,
     courseData,
-    lectureData,
-    totalCourses: courseData.length,
+    lectureData: assignedLectures,
+    totalCourses: assignedLectures.length,
     totalInstructors: instructors.length,
-    totalSheduleLec: lectureData.length,
+    totalSheduleLec: assignedLectures.length,
   };
 };
 
@@ -196,5 +211,8 @@ exports.updateProfile = (req, res) => {
 
 //My Lectures------------------------------------------------------------------------------------------------------------------
 exports.lectures = (req, res) => {
-  res.render("instructor/myLectures", { lectureData });
+  const currentUserName = req.user?.name || "";
+  const assignedLectures = getAssignedLectures(currentUserName);
+
+  res.render("instructor/myLectures", { lectureData: assignedLectures });
 };

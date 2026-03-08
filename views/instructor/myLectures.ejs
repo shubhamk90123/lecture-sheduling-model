@@ -29,35 +29,33 @@
 
         <tbody>
 
-          <tr>
-            <% if (lectureData.length===0) { %>
-          <tr>
-            <td colspan="3">No instructors found</td>
-          </tr>
+          <% if (!lectureData || lectureData.length === 0) { %>
+            <tr>
+              <td colspan="6">No lectures assigned yet</td>
+            </tr>
           <% } %>
-            <% lectureData.forEach((ins, idx)=> { %>
-              <tr>
-                <td>
-                  <%= idx +1 %>
-                </td>
-                <td>
-                  <%= ins.courseName %>
-                </td>
-                <td>
-                  <%= ins.startDate %>
-                </td>
-                <td>
-                  <%= ins.courseCode %>
-                </td>
-                <td>
-                  <%= ins.duration %>
-                </td>
-                <td>
-                  10 Am
-                </td>
-              </tr>
-              <% }) %>
-                </tr>
+          <% lectureData.forEach((ins, idx)=> { %>
+            <tr>
+              <td>
+                <%= idx +1 %>
+              </td>
+              <td>
+                <%= ins.courseName %>
+              </td>
+              <td>
+                <%= ins.startDate %>
+              </td>
+              <td>
+                <%= ins.courseCode %>
+              </td>
+              <td>
+                <%= ins.duration %>
+              </td>
+              <td>
+                10 Am
+              </td>
+            </tr>
+          <% }) %>
 
         </tbody>
 
