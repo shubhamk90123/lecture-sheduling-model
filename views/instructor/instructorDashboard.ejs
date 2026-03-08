@@ -17,10 +17,10 @@
       <h2><i class="fa fa-calendar"></i> Lecture Scheduler</h2>
 
       <ul>
-        <li class="active"><i class="fa fa-home"></i> <a href="/instructor/dashboard">Dashboard</a> </li>
+        <li><i class="fa fa-home"></i> <a href="/instructor/instructorDashboard">Dashboard</a> </li>
         <li><i class="fa fa-book"></i> <a href="/instructor/lectures">My Lectures</a></li>
         <li><i class="fa fa-user"></i> <a href="/instructor/profile">My Profile</a></li>
-        <li><i class="fa fa-sign-out"></i> <a href="/">Logout</a></li>
+        <li><i class="fa fa-sign-out"></i> <a href="/logout">Logout</a></li>
       </ul>
 
     </div>
@@ -30,10 +30,12 @@
 
       <div class="topbar">
 
+
+
         <h1>Instructor Dashboard</h1>
 
         <div class="profile">
-          Welcome, John Doe
+          Welcome, <%= currentUserName %>
           <i class="fa fa-user-circle"></i>
         </div>
 
@@ -45,13 +47,17 @@
         <div class="card">
           <i class="fa fa-book"></i>
           <h3>Assigned Lectures</h3>
-          <p>8</p>
+          <p>
+            <%= totalCourses %>
+          </p>
         </div>
 
         <div class="card">
           <i class="fa fa-calendar"></i>
           <h3>Upcoming Lectures</h3>
-          <p>3</p>
+          <p>
+            <%= totalCourses %>
+          </p>
         </div>
 
         <div class="card">
@@ -70,7 +76,7 @@
 
           <h2>My Upcoming Lectures</h2>
 
-          <button id="viewLectures">View All Lectures</button>
+          <a href="/instructor/lectures">View All Lectures</a>
 
         </div>
 
@@ -81,45 +87,49 @@
             <tr>
               <th>Course</th>
               <th>Date</th>
+              <th>Duration</th>
+              <th>Level</th>
               <th>Time</th>
-              <th>Actions</th>
             </tr>
 
           </thead>
 
 
-          <tbody id="lectureTable">
+          <tr>
+            <% if (!lectureData || lectureData.length===0) { %>
+          <tr>
+            <td colspan="4">No lectures scheduled</td>
+          </tr>
+          <% } %>
 
-            <tr>
-              <td>Web Development</td>
-              <td>May 25, 2024</td>
-              <td>10:00 AM</td>
-              <td><button class="details">View Details</button></td>
-            </tr>
+            <% lectureData.forEach((lec)=> { %>
+              <tr>
+                <td>
+                  <%= lec.courseName %>
+                </td>
+                <td>
+                  <%= lec.startDate %>
+                </td>
+                <td>
+                  <%= lec.duration %>
+                </td>
+                <td>
+                  <%= lec.courseCode %>
+                </td>
+                <td>
+                  10 AM
+                </td>
+              </tr>
+              <% }) %>
+                </tr>
 
-            <tr>
-              <td>Data Science</td>
-              <td>May 27, 2024</td>
-              <td>02:00 PM</td>
-              <td><button class="details">View Details</button></td>
-            </tr>
-
-            <tr>
-              <td>Cyber Security</td>
-              <td>May 30, 2024</td>
-              <td>09:00 AM</td>
-              <td><button class="details">View Details</button></td>
-            </tr>
-
-          </tbody>
+                </tbody>
 
         </table>
 
       </div>
 
     </div>
-
-    <script src="/js/instructorJS/instructor.js"></script>
 
   </body>
 

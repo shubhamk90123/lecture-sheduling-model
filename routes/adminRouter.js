@@ -1,6 +1,7 @@
 //External Modules
 const express = require("express");
 const adminRouter = express.Router();
+const { requireRole } = require("../middleware/auth");
 const {
   getDashboard,
   postDashboard,
@@ -13,9 +14,9 @@ const {
   postSheduleLec,
 } = require("../controller/adminController");
 
-adminRouter.get("/dashboard", getDashboard);
+adminRouter.use(requireRole("admin"));
 
-adminRouter.post("/dashboard", postDashboard);
+adminRouter.get("/dashboard", getDashboard);
 
 adminRouter.get("/add-course", getaddCourse);
 

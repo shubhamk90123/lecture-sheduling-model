@@ -10,7 +10,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+  background: linear-gradient(135deg, #749be3, #f4f6f9);
 }
 
 .signup-container {

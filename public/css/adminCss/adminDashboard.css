@@ -7,7 +7,7 @@
 
 body {
   display: flex;
-  background: #f4f6f9;
+  background: linear-gradient(135deg, #a0b9e6, #f4f6f9);
 }
 
 hr {

@@ -11,45 +11,51 @@
   <body>
 
     <div class="container" id="container">
-      <div class="form-container sign-up">
-        <form action="/admin/dashboard" method="POST">
-          <h1>Admin Login</h1>
-          <input type="email" name="email" placeholder="Email" required>
-          <input type="password" name="password" placeholder="Password" required>
-          <input type="text" name="role" placeholder="Enter your role" required>
-          <button type="submit">Sign In</button>
-          <hr />
-          <p>Sign up if you are new</p>
-          <a href="/signup">Sign Up</a>
-        </form>
-      </div>
+      <% if (typeof errorMessage !=="undefined" && errorMessage) { %>
+        <script>
+          alert("<%= errorMessage %>")
+        </script>
+        <% } %>
+          <div class="form-container sign-up">
+            <form action="/login" method="POST">
+              <h1>Admin Login</h1>
+              <input type="email" name="email" placeholder="Email" required>
+              <input type="password" name="password" placeholder="Password" required>
+              <input type="hidden" name="portal" value="admin">
+              <button type="submit">Sign In</button>
+              <hr />
+              <p>Sign up if you are new</p>
+              <a href="/signup">Sign Up</a>
+            </form>
+          </div>
 
-      <div class="form-container sign-in">
-        <form action="/instructor/dashboard" method="POST">
-          <h1>Instructor Login</h1>
-          <input type="email" name="email" placeholder="Email" required>
-          <input type="password" name="password" placeholder="Password" required>
-          <input type="text" name="role" placeholder="Enter You Role">
-          <button type="submit">Sign In</button>
-          <hr />
-          <p>Sign up if you are new</p>
-          <a href="/signup">Sign Up</a>
-      </div>
-      </form>
-      <div class="toggle-container">
-        <div class="toggle">
-          <div class="toggle-panel toggle-left">
-            <h1>Instructor Login</h1>
-            <p>Click the below button for instructor access</p>
-            <button class="hidden" id="login">Sign In</button>
+          <div class="form-container sign-in">
+            <form action="/login" method="POST">
+              <h1>Instructor Login</h1>
+              <input type="email" name="email" placeholder="Email" required>
+              <input type="password" name="password" placeholder="Password" required>
+              <input type="hidden" name="portal" value="instructor">
+              <button type="submit">Sign In</button>
+              <hr />
+              <p>Sign up if you are new</p>
+              <a href="/signup">Sign Up</a>
+            </form>
           </div>
-          <div class="toggle-panel toggle-right">
-            <h1>Admin Login</h1>
-            <p>Click the button below to access the admin panel</p>
-            <button class="hidden" id="register">Sign In</button>
+
+          <div class="toggle-container">
+            <div class="toggle">
+              <div class="toggle-panel toggle-left">
+                <h1>Instructor Login</h1>
+                <p>Click the below button for instructor access</p>
+                <button class="hidden" id="login">Sign In</button>
+              </div>
+              <div class="toggle-panel toggle-right">
+                <h1>Admin Login</h1>
+                <p>Click the button below to access the admin panel</p>
+                <button class="hidden" id="register">Sign In</button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
     </div>
     <script src="/js/pageJs/login.js"></script>
   </body>

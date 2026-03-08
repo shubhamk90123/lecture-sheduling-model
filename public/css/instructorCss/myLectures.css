@@ -6,7 +6,7 @@
 }
 
 body {
-  background: linear-gradient(180deg, #eef4ff 0%, #f4f6f9 100%);
+  background: linear-gradient(135deg, #749be3, #f4f6f9);
   padding: 40px 20px;
   color: #1f2937;
 }
@@ -49,7 +49,9 @@ td {
 }
 
 tbody tr {
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 tbody tr:nth-child(even) {

@@ -1,8 +1,7 @@
-
-
 //External modules
 const express = require("express");
 const instructorRouter = express.Router();
+const { requireRole } = require("../middleware/auth");
 
 //Local Modules
 const {
@@ -13,10 +12,11 @@ const {
   lectures,
 } = require("../controller/instructorContolller");
 
+instructorRouter.use(requireRole("instructor"));
 
-instructorRouter.get("/dashboard", getDashboard);
+instructorRouter.get("/instructorDashboard", getDashboard);
 
-instructorRouter.post("/dashboard", postDashboard);
+instructorRouter.post("/instructorDashboard", postDashboard);
 
 instructorRouter.get("/profile", profile);
 

@@ -21,9 +21,17 @@
     "id": 3,
     "name": "Sara Goel",
     "email": "sara@gmail.com",
-    "password": "Sara@321",
+    "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
     "role": "instructor",
-    "specialization": "Cyber Security",
-    "contact": "7777777777"
+    "specialization": "",
+    "contact": "7977033974"
+  },
+  {
+    "name": "shubham",
+    "email": "shub@gmail.com",
+    "password": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+    "role": "admin",
+    "contact": "1111111111",
+    "specialization": ""
   }
 ]

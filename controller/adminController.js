@@ -38,29 +38,30 @@ const getInstructors = () =>
     (user) => user.role && user.role.toLowerCase() === "instructor",
   );
 
-//Admin Dashboard---------------------------------------------------------------------------------------------------------------------------
-exports.getDashboard = (req, res) => {
+const getDashboardData = (currentUserName = "User") => {
   const instructors = getInstructors();
 
-  res.render("admin/dashboard", {
+  return {
+    currentUserName,
     instructors,
     courseData,
     lectureData,
     totalCourses: courseData.length,
     totalInstructors: instructors.length,
     totalSheduleLec: lectureData.length,
-  });
+  };
 };
 
-exports.postDashboard = (req, res) => {
-  console.log(req.body, req.method);
-  res.redirect("/admin/dashboard");
+//Admin Dashboard---------------------------------------------------------------------------------------------------------------------------
+exports.getDashboard = (req, res) => {
+  const currentUserName = req.user?.name || "User";
+  res.render("admin/dashboard", getDashboardData(currentUserName));
 };
 
 //Add Course----------------------------------------------------------------------------------------------------------------------------------
 exports.getaddCourse = (req, res) => {
   const instructors = getInstructors();
-  res.render("admin/addCourse", { instructors });
+  res.render("admin/addCourse", getDashboardData());
 };
 
 exports.postaddCourse = (req, res) => {
@@ -90,17 +91,17 @@ exports.postaddCourse = (req, res) => {
 //Manage Instructors---------------------------------------------------------------------------------------------------------------------------
 exports.viewInstructor = (req, res) => {
   const instructors = getInstructors();
-  res.render("admin/viewInstructors", { instructors });
+  res.render("admin/viewInstructors", getDashboardData());
 };
 
 //All Courses-----------------------------------------------------------------------------------------------------------------------------------
 exports.allCourses = (req, res) => {
-  res.render("admin/allCourses", { courseData });
+  res.render("admin/allCourses", getDashboardData());
 };
 
 //Manage Lectures------------------------------------------------------------------------------------------------------------------------------
 exports.manageLec = (req, res) => {
-  res.render("admin/manageLec", { lectureData });
+  res.render("admin/manageLec", getDashboardData());
 };
 
 //Shedule Lectures-----------------------------------------------------------------------------------------------------------------------------
@@ -173,3 +174,4 @@ exports.postSheduleLec = (req, res) => {
 
 exports.lectureData = lectureData;
 exports.courseData = courseData;
+exports.getInstructors = getInstructors;

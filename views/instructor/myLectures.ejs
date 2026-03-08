@@ -21,46 +21,49 @@
             <th>ID</th>
             <th>Course Name</th>
             <th>Date</th>
+            <th>Level</th>
+            <th>Duration</th>
             <th>Time</th>
-            <th>Room</th>
-            <th>Status</th>
           </tr>
         </thead>
 
         <tbody>
 
           <tr>
-            <td>1</td>
-            <td>Web Development</td>
-            <td>2026-03-10</td>
-            <td>10:00 AM</td>
-            <td>Room A1</td>
-            <td class="upcoming">Upcoming</td>
-          </tr>
-
+            <% if (lectureData.length===0) { %>
           <tr>
-            <td>2</td>
-            <td>Data Science</td>
-            <td>2026-03-12</td>
-            <td>2:00 PM</td>
-            <td>Room B2</td>
-            <td class="upcoming">Upcoming</td>
+            <td colspan="3">No instructors found</td>
           </tr>
-
-          <tr>
-            <td>3</td>
-            <td>Cyber Security</td>
-            <td>2026-03-05</td>
-            <td>11:00 AM</td>
-            <td>Room C3</td>
-            <td class="completed">Completed</td>
-          </tr>
+          <% } %>
+            <% lectureData.forEach((ins, idx)=> { %>
+              <tr>
+                <td>
+                  <%= idx +1 %>
+                </td>
+                <td>
+                  <%= ins.courseName %>
+                </td>
+                <td>
+                  <%= ins.startDate %>
+                </td>
+                <td>
+                  <%= ins.courseCode %>
+                </td>
+                <td>
+                  <%= ins.duration %>
+                </td>
+                <td>
+                  10 Am
+                </td>
+              </tr>
+              <% }) %>
+                </tr>
 
         </tbody>
 
       </table>
       <div class="dashboard">
-        <a href="/instructor/dashboard">GO TO DASHBOARD</a>
+        <a href="/instructor/instructorDashboard">GO TO DASHBOARD</a>
       </div>
 
     </div>

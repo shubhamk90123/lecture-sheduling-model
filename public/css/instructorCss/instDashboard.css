@@ -7,7 +7,7 @@
 
 body {
   display: flex;
-  background: #f4f6f9;
+  background: linear-gradient(135deg, #749be3, #f4f6f9);
 }
 
 /* SIDEBAR */
@@ -15,7 +15,7 @@ body {
 .sidebar {
   width: 230px;
   height: 100vh;
-  background: #0f3c78;
+  background: #366eb6;
   color: white;
   padding: 20px;
 }
@@ -41,12 +41,12 @@ body {
 }
 
 .sidebar ul li:hover {
-  background: #1d4ed8;
+  background: #1e40af;
 }
 
-.active {
+/* .active {
   background: #1d4ed8;
-}
+} */
 
 /* MAIN CONTENT */
 
@@ -120,16 +120,17 @@ body {
   margin-bottom: 15px;
 }
 
-button {
+.table-header a {
   background: #1d4ed8;
   color: white;
   border: none;
   padding: 8px 14px;
   border-radius: 6px;
   cursor: pointer;
+  text-decoration: none;
 }
 
-button:hover {
+a:hover {
   background: #1e40af;
 }
 
