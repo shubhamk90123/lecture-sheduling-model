@@ -24,13 +24,13 @@
       </ul>
 
     </div>
-+
+
     <div class="main">
 
       <div class="topbar">
         <h1>Admin Dashboard</h1>
         <div class="profile">
-          <a href="">Welcome, Admin</a>
+          Welcome, Admin
           <i class="fa fa-user-circle"></i>
         </div>
       </div>
@@ -39,23 +39,28 @@
 
         <div class="card">
           <h3>Total Courses</h3>
-          <p>8</p>
+          <p>
+            <%= totalCourses %>
+          </p>
         </div>
 
         <div class="card">
           <h3>Total Instructors</h3>
-          <p>5</p>
+          <p>
+            <%= totalInstructors %>
+          </p>
         </div>
 
         <div class="card">
           <h3>Scheduled Lectures</h3>
-          <p>12</p>
+          <p>
+            <%= totalSheduleLec %>
+          </p>
         </div>
 
       </div>
 
       <div class="tables">
-
         <div class="table-box">
           <div class="table-header">
             <h3>Courses List</h3>
@@ -64,25 +69,29 @@
 
           <table>
             <tr>
+              <th>No</th>
               <th>Course Name</th>
-              <th>Level</th>
+              <th>Duration</th>
             </tr>
-
-            <tr>
-              <td>Web Development</td>
-              <td>Beginner</td>
-            </tr>
-
-            <tr>
-              <td>Data Science</td>
-              <td>Intermediate</td>
-            </tr>
-
-            <tr>
-              <td>Cyber Security</td>
-              <td>Advanced</td>
-            </tr>
-
+            <% const limitedCourses = (courseData || []).slice(0, 3); %>
+            <% if (limitedCourses.length === 0) { %>
+              <tr>
+                <td colspan="3">No courses found</td>
+              </tr>
+            <% } %>
+            <% limitedCourses.forEach((course, idx)=> { %>
+              <tr>
+                <td>
+                  <%= idx + 1 %>
+                </td>
+                <td>
+                  <%= course.courseName %>
+                </td>
+                <td>
+                  <%= course.duration %>
+                </td>
+              </tr>
+              <% }); %>
           </table>
 
         </div>
@@ -97,17 +106,21 @@
 
             <tbody>
               <tr>
+                <th>No</th>
                 <th>Name</th>
                 <th>Email</th>
               </tr>
-              <% if (!instructors || instructors.length===0) { %>
+              <% const limitedInstructors = (instructors || []).slice(0, 3); %>
+              <% if (limitedInstructors.length===0) { %>
                 <tr>
-                  <td colspan="6">No instructors found</td>
+                  <td colspan="3">No instructors found</td>
                 </tr>
                 <% } %>
-                  <% instructors.forEach((ins, idx)=> { %>
+                  <% limitedInstructors.forEach((ins, idx)=> { %>
                     <tr>
-
+                      <td>
+                        <%= idx +1 %>
+                      </td>
                       <td>
                         <%= ins.name %>
                       </td>
@@ -130,7 +143,7 @@
 
         <div class="table-header">
           <h3>Scheduled Lectures</h3>
-          <a href="/admin/manageLecture">Schedule Lecture</a>
+          <a href="/admin/sheduleLec">Schedule Lecture</a>
         </div>
 
         <table>
@@ -142,35 +155,29 @@
             <th>Actions</th>
           </tr>
 
-          <tr>
-            <td>Data Science</td>
-            <td>John Doe</td>
-            <td>June 15, 2024</td>
-            <td>
-              <button class="edit">Edit</button>
-              <button class="delete">Delete</button>
-            </td>
-          </tr>
+          <% if (!lectureData || lectureData.length === 0) { %>
+            <tr>
+              <td colspan="4">No lectures scheduled</td>
+            </tr>
+          <% } %>
 
-          <tr>
-            <td>Web Development</td>
-            <td>Jane Smith</td>
-            <td>June 18, 2024</td>
-            <td>
-              <button class="edit">Edit</button>
-              <button class="delete">Delete</button>
-            </td>
-          </tr>
-
-          <tr>
-            <td>Cyber Security</td>
-            <td>Mike Johnson</td>
-            <td>June 22, 2024</td>
-            <td>
-              <button class="edit">Edit</button>
-              <button class="delete">Delete</button>
-            </td>
-          </tr>
+          <% lectureData.forEach((lec) => { %>
+            <tr>
+              <td>
+                <%= lec.courseName %>
+              </td>
+              <td>
+                <%= lec.instructor %>
+              </td>
+              <td>
+                <%= lec.startDate %>
+              </td>
+              <td>
+                <button class="edit">Edit</button>
+                <button class="delete">Delete</button>
+              </td>
+            </tr>
+          <% }) %>
 
         </table>
 

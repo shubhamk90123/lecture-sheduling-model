@@ -9,6 +9,8 @@ const {
   allCourses,
   manageLec,
   postaddCourse,
+  getSheduleLec,
+  postSheduleLec,
 } = require("../controller/adminController");
 
 adminRouter.get("/dashboard", getDashboard);
@@ -24,5 +26,9 @@ adminRouter.get("/viewInstructors", viewInstructor);
 adminRouter.get("/viewCourses", allCourses);
 
 adminRouter.get("/manageLecture", manageLec);
+
+adminRouter.get("/sheduleLec", getSheduleLec);
+
+adminRouter.post("/sheduleLec", postSheduleLec);
 
 exports.adminRouter = adminRouter;
