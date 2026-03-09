@@ -1,6 +1,5 @@
 [
   {
-    "id": 1,
     "name": "Adity kapoor ",
     "email": "Adity@gmail.com",
     "password": "Adi@123",
@@ -9,7 +8,6 @@
     "contact": "9999999999"
   },
   {
-    "id": 2,
     "name": "Rahul Sharma",
     "email": "Rahul@gmail.com",
     "password": "Rahul#123",
@@ -18,7 +16,6 @@
     "contact": "8888888888"
   },
   {
-    "id": 3,
     "name": "Sara Goel",
     "email": "sara@gmail.com",
     "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
@@ -31,7 +28,13 @@
     "email": "shub@gmail.com",
     "password": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
     "role": "admin",
-    "contact": "1111111111",
-    "specialization": ""
+    "contact": "1111111111"
+  },
+  {
+    "name": "shubham",
+    "email": "sk@gmail.com",
+    "password": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+    "role": "admin",
+    "contact": "8520852002"
   }
 ]
