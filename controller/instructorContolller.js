@@ -34,8 +34,7 @@ const getAssignedLectures = (currentUserName = "") => {
 
   return lectureData.filter(
     (lec) =>
-      lec.instructor &&
-      lec.instructor.trim().toLowerCase() === normalizedName,
+      lec.instructor && lec.instructor.trim().toLowerCase() === normalizedName,
   );
 };
 

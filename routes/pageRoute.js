@@ -9,7 +9,10 @@ const {
   getSignup,
   postLogin,
   logout,
+  rootPage,
 } = require("../controller/pageController");
+
+pageRoute.get("/", rootPage);
 
 pageRoute.post("/signup", postSignup);
 

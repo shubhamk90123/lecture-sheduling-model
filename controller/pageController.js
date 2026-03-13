@@ -31,7 +31,12 @@ const createAuthCookie = (token) => {
   return `authToken=${encodeURIComponent(token)}; Path=/; HttpOnly; Max-Age=${maxAge}; SameSite=Lax`;
 };
 
-//Signup Logic
+//Root page=================================================================================================
+exports.rootPage = (req, res) => {
+  res.render("rootPage");
+};
+
+//Signup Logic=============================================================================================
 exports.getSignup = (req, res) => {
   res.render("signup");
 };
@@ -71,7 +76,7 @@ exports.postSignup = (req, res) => {
   return res.redirect("/login");
 };
 
-//Login Logic
+//Login Logic==============================================================================================
 exports.getLogin = (req, res) => {
   res.render("login", { errorMessage: "" });
 };
@@ -87,8 +92,7 @@ exports.postLogin = (req, res) => {
 
   const normalizedEmail = email.trim().toLowerCase();
   const user = userData.find(
-    (entry) =>
-      entry.email && entry.email.toLowerCase() === normalizedEmail,
+    (entry) => entry.email && entry.email.toLowerCase() === normalizedEmail,
   );
 
   if (!user) {
@@ -105,7 +109,7 @@ exports.postLogin = (req, res) => {
     return res
       .status(401)
       .render("login", { errorMessage: "Invalid email or password." });
-  } 
+  }
 
   const userRole = (user.role || "").toLowerCase();
   const requestedPortal = (portal || "").toLowerCase();

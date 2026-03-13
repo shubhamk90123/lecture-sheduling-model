@@ -11,6 +11,11 @@
   <body>
 
     <div class="signup-container">
+      <% if (typeof errorMessage !=="undefined" && errorMessage) { %>
+        <script>
+          alert("<%= errorMessage %>")
+        </script>
+        <% } %>
 
       <h2>Create Account</h2>
 
@@ -77,7 +82,7 @@
       </form>
 
     </div>
-    <script src="/js/pageJs/signUp.js"></script>
+    <script src="/js/pageJS/signUp.js"></script>
   </body>
 
 </html>

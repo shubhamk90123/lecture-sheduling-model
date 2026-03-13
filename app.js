@@ -14,7 +14,6 @@ const rootdir = require("./utils/path");
 const { adminRouter } = require("./routes/adminRouter");
 const { instructorRouter } = require("./routes/instructorRouter");
 const { pageRoute } = require("./routes/pageRoute");
-const { arr } = require("./controller/pageController");
 
 // BODY PARSER -
 app.use(express.urlencoded({ extended: true }));
@@ -25,13 +24,7 @@ app.use(express.static(path.join(rootdir, "public")));
 // Routers
 app.use("/admin", adminRouter);
 app.use("/instructor", instructorRouter);
-app.use("/", pageRoute);
-
-// Routes
-app.get("/", (req, res) => {
-  res.render("rootPage");
-  //console.log(arr);
-});
+app.use(pageRoute);
 
 app.use((req, res, next) => {
   res.status(404).render("404");
