@@ -57,9 +57,15 @@
 
                         <div class="form-group">
                             <label><i class="fa-solid fa-calendar-day text-primary-small"></i> Start Date</label>
-                            <input type="date" name="startDate" required>
+                            <input type="date" name="startDate" id="startDateInput" required>
                         </div>
                     </div>
+
+                    <script>
+                        // Set min date to today
+                        const today = new Date().toISOString().split('T')[0];
+                        document.getElementById('startDateInput').setAttribute('min', today);
+                    </script>
 
                     <button type="submit" class="btn-primary w-full py-1 text-lg shadow-primary">
                         <i class="fa-solid fa-check-circle mr-1"></i> Finalize Schedule

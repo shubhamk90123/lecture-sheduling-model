@@ -1,54 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-
-  <head>
+<head>
     <%- include('../partials/head') %>
-  </head>
-
-  <body>
+</head>
+<body>
 
     <%- include('../partials/sidebar') %>
 
     <div class="main">
+        <%- include('../partials/topbar') %>
 
-      <%- include('../partials/topbar') %>
+        <div class="table-container p-1 border-radius-lg" style="margin: 1rem;">
+            <div class="table-header">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="card-icon icon-blue" style="margin-bottom: 0;"><i class="fa-solid fa-chalkboard-user"></i></div>
+                    <h2 class="form-title">My Assigned Sessions</h2>
+                </div>
+            </div>
 
-      <div class="container">
-
-        <h2>My Lectures</h2>
-
-        <table>
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Course Name</th>
-              <th>Date</th>
-              <th>Level</th>
-              <th>Duration</th>
-              <th>Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% if (!lectureData || lectureData.length === 0) { %>
-              <tr><td colspan="6">No lectures assigned yet</td></tr>
-            <% } %>
-            <% (lectureData || []).forEach((lec, idx) => { %>
-              <tr>
-                <td><%= idx + 1 %></td>
-                <td><%= lec.courseName %></td>
-                <td><%= lec.startDate || lec.date %></td>
-                <td><%= lec.courseCode || lec.level %></td>
-                <td><%= lec.duration %></td>
-                <td><%= lec.startTime || '—' %></td>
-              </tr>
-            <% }); %>
-          </tbody>
-        </table>
-
-      </div>
-
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">No</th>
+                        <th>Course Module</th>
+                        <th>Scheduled Date</th>
+                        <th>Level</th>
+                        <th>Duration</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (!lectureData || lectureData.length === 0) { %>
+                        <tr>
+                            <td colspan="6" class="text-center" style="padding: 4rem; color: var(--text-muted);">
+                                <i class="fa-solid fa-calendar-xmark" style="font-size: 2.5rem; opacity: 0.2; display: block; margin-bottom: 1rem;"></i>
+                                No lectures assigned to you yet
+                            </td>
+                        </tr>
+                    <% } %>
+                    <% (lectureData || []).forEach((lec, idx) => { %>
+                        <tr>
+                            <td style="font-weight: 700; color: var(--text-muted);"><%= idx + 1 %></td>
+                            <td>
+                                <div style="font-weight: 700; color: var(--text-main);"><%= lec.courseName %></div>
+                            </td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--primary);">
+                                    <i class="fa-solid fa-calendar-day" style="font-size: 0.85rem; opacity: 0.6;"></i>
+                                    <%= new Date(lec.startDate || lec.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }) %>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge badge-<%= (lec.courseCode || 'beginner').toLowerCase() %>"><%= lec.courseCode %></span>
+                            </td>
+                            <td>
+                                <span style="font-weight: 700;"><%= lec.duration %></span>
+                                <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Mins</span>
+                            </td>
+                            <td>
+                                <span class="badge" style="background: #ecfdf5; color: #059669; border: 1px solid #d1fae5;">
+                                    <i class="fa-solid fa-circle-check" style="font-size: 0.65rem; margin-right: 4px;"></i> Active
+                                </span>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-  </body>
-
+</body>
 </html>

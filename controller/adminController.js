@@ -66,7 +66,7 @@ exports.getDashboard = async (req, res) => {
 
     res.render("dashboard", {
       role: "admin",
-      pageTitle: "Admin Dashboard",
+      pageTitle: "Dashboard",
       currentUserName: req.user?.name || "Admin",
       instructors,
       courseData: courses,
@@ -128,7 +128,15 @@ exports.manageLec = async (req, res) => {
   const courses = await Course.find({}).lean();
   let allLectures = [];
   courses.forEach(c => {
-    c.lectures.forEach(l => allLectures.push({ ...l, courseName: c.name, courseCode: c.level }));
+    (c.lectures || []).forEach(l => {
+      allLectures.push({ 
+        ...l, 
+        courseName: c.name, 
+        courseCode: c.level, 
+        courseId: c._id, 
+        lectureId: l._id 
+      });
+    });
   });
 
   res.render("admin/manageLec", {
@@ -137,6 +145,78 @@ exports.manageLec = async (req, res) => {
     currentUserName: req.user?.name || "Admin",
     lectureData: allLectures
   });
+};
+
+// Delete Lecture
+exports.deleteLecture = async (req, res) => {
+  try {
+    const { courseId, lectureId } = req.params;
+    await Course.findByIdAndUpdate(courseId, {
+      $pull: { lectures: { _id: lectureId } }
+    });
+    res.redirect("/admin/manageLecture");
+  } catch (error) {
+    res.status(500).send("Error deleting lecture");
+  }
+};
+
+// Edit Lecture
+exports.getEditLecture = async (req, res) => {
+  try {
+    const { courseId, lectureId } = req.params;
+    const course = await Course.findById(courseId).lean();
+    const lecture = course.lectures.find(l => l._id.toString() === lectureId);
+    const instructors = await User.find({ role: "instructor" }).lean();
+    
+    res.render("admin/editLecture", {
+      role: "admin",
+      pageTitle: "Edit Lecture",
+      currentUserName: req.user?.name || "Admin",
+      course,
+      lecture,
+      instructors
+    });
+  } catch (error) {
+    res.status(500).send("Error loading edit page");
+  }
+};
+
+exports.postEditLecture = async (req, res) => {
+  try {
+    const { courseId, lectureId } = req.params;
+    const { instructor, duration, date } = req.body;
+
+    // Logic: Don't allow past dates
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (new Date(date) < today) {
+        const course = await Course.findById(courseId).lean();
+        const lecture = course.lectures.find(l => l._id.toString() === lectureId);
+        const instructors = await User.find({ role: "instructor" }).lean();
+        return res.render("admin/editLecture", {
+            role: "admin", pageTitle: "Edit Lecture", currentUserName: req.user?.name,
+            course, lecture, instructors, errorMessage: "Date cannot be in the past."
+        });
+    }
+
+    const instructorUser = await User.findOne({ name: instructor });
+    
+    await Course.updateOne(
+      { _id: courseId, "lectures._id": lectureId },
+      {
+        $set: {
+          "lectures.$.instructorId": instructorUser._id,
+          "lectures.$.instructorName": instructorUser.name,
+          "lectures.$.duration": duration,
+          "lectures.$.date": date
+        }
+      }
+    );
+
+    res.redirect("/admin/manageLecture");
+  } catch (error) {
+    res.status(500).send("Error updating lecture");
+  }
 };
 
 // Schedule Lecture
@@ -156,6 +236,18 @@ exports.getSheduleLec = async (req, res) => {
 exports.postSheduleLec = async (req, res) => {
   try {
     const { courseName, instructor, duration, startDate } = req.body;
+
+    // Logic: Don't allow past dates
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (new Date(startDate) < today) {
+      const instructors = await User.find({ role: "instructor" }).lean();
+      const courses = await Course.find({}).lean();
+      return res.render("admin/sheduleLec", {
+        role: "admin", pageTitle: "Schedule Lecture", currentUserName: req.user?.name,
+        instructors, courseData: courses, errorMessage: "You cannot schedule a lecture in the past."
+      });
+    }
 
     // Find the instructor to get their ID
     const instructorUser = await User.findOne({ name: instructor });

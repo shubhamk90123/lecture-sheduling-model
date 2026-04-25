@@ -14,6 +14,9 @@ const {
   postSheduleLec,
   profile,
   updateProfile,
+  deleteLecture,
+  getEditLecture,
+  postEditLecture,
 } = require("../controller/adminController");
 const upload = require("../utils/upload");
 
@@ -37,5 +40,9 @@ adminRouter.get("/manageLecture", manageLec);
 adminRouter.get("/sheduleLec", getSheduleLec);
 
 adminRouter.post("/sheduleLec", postSheduleLec);
+
+adminRouter.get("/delete-lecture/:courseId/:lectureId", deleteLecture);
+adminRouter.get("/edit-lecture/:courseId/:lectureId", getEditLecture);
+adminRouter.post("/edit-lecture/:courseId/:lectureId", postEditLecture);
 
 exports.adminRouter = adminRouter;

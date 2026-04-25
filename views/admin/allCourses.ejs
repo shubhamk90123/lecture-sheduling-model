@@ -1,60 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-
-  <head>
+<head>
     <%- include('../partials/head') %>
-  </head>
-
-  <body>
+</head>
+<body>
 
     <%- include('../partials/sidebar') %>
 
     <div class="main">
+        <%- include('../partials/topbar') %>
 
-      <%- include('../partials/topbar') %>
+        <div class="table-container p-1 border-radius-lg" style="margin: 1rem;">
+            <div class="table-header">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="card-icon icon-amber" style="margin-bottom: 0;"><i class="fa-solid fa-book"></i></div>
+                    <h2 class="form-title">Course Repository</h2>
+                </div>
+                <a href="/admin/add-course" class="btn-primary" style="padding: 8px 20px; font-size: 0.85rem;">
+                    <i class="fa-solid fa-plus mr-1"></i> Add New Course
+                </a>
+            </div>
 
-      <div class="table-container">
-        <div class="table-header">
-          <h2>All Courses</h2>
-          <a href="/admin/add-course" class="btn-primary"><i class="fa fa-plus"></i> Add New Course</a>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Preview</th>
+                        <th>Course Details</th>
+                        <th>Level</th>
+                        <th style="width: 300px;">Overview</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (!courseData || courseData.length === 0) { %>
+                        <tr>
+                            <td colspan="5" class="text-center" style="padding: 4rem; color: var(--text-muted);">
+                                <i class="fa-solid fa-folder-open" style="font-size: 2.5rem; opacity: 0.2; display: block; margin-bottom: 1rem;"></i>
+                                No courses found in the repository
+                            </td>
+                        </tr>
+                    <% } %>
+                    <% (courseData || []).forEach((course, idx) => { %>
+                        <tr>
+                            <td>
+                                <img src="<%= course.image || '/images/default-course.png' %>" class="course-avatar" style="width: 55px; height: 55px; border: 2px solid #fff; box-shadow: var(--shadow-sm);">
+                            </td>
+                            <td>
+                                <div style="font-weight: 800; color: var(--text-main); font-size: 1.1rem;"><%= course.name %></div>
+                                <div style="font-size: 0.7rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-top: 2px;">Module ID: #<%= course._id.toString().slice(-6).toUpperCase() %></div>
+                            </td>
+                            <td>
+                                <span class="badge badge-<%= (course.level || '').toLowerCase() %>" style="padding: 6px 14px;"><%= course.level %></span>
+                            </td>
+                            <td>
+                                <div style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                    <%= course.description || 'No description provided for this course module.' %>
+                                </div>
+                            </td>
+                            <td style="text-align: right;">
+                                <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                                    <a href="#" class="btn-primary" style="padding: 8px 14px; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; font-size: 0.85rem; box-shadow: none;">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                    <a href="#" class="btn-primary" style="padding: 8px 14px; background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; font-size: 0.85rem; box-shadow: none;" onclick="return confirm('Delete this course? This action cannot be undone.')">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
         </div>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>Course Name</th>
-              <th>Level</th>
-              <th>Description</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% if (!courseData || courseData.length === 0) { %>
-              <tr><td colspan="5">No courses found</td></tr>
-            <% } %>
-            <% (courseData || []).forEach((course, idx) => { %>
-              <tr>
-                <td>
-                  <img src="<%= course.image || '/images/default-course.png' %>" alt="Course" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                </td>
-                <td style="font-weight: 700;"><%= course.name %></td>
-                <td>
-                  <span class="badge badge-<%= (course.level || '').toLowerCase() %>"><%= course.level %></span>
-                </td>
-                <td style="color: var(--text-muted); font-size: 0.8rem;"><%= course.description || '—' %></td>
-                <td>
-                  <button class="edit"><i class="fa fa-edit"></i></button>
-                  <button class="delete"><i class="fa fa-trash"></i></button>
-                </td>
-              </tr>
-            <% }); %>
-          </tbody>
-        </table>
-      </div>
-
     </div>
 
-  </body>
-
+</body>
 </html>

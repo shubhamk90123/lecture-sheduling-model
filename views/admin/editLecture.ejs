@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body>
+
+    <%- include('../partials/sidebar') %>
+
+    <div class="main">
+        <%- include('../partials/topbar') %>
+
+        <div class="form-card-container">
+            <div class="table-container p-3 border-radius-lg">
+                <div class="text-center mb-2">
+                    <div class="form-header-icon schedule flex-center">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </div>
+                    <h2 class="form-title">Edit Session</h2>
+                    <p class="form-subtitle">Updating lecture for <strong><%= course.name %></strong></p>
+                </div>
+
+                <form action="/admin/edit-lecture/<%= course._id %>/<%= lecture._id %>" method="POST">
+                    <div class="form-group mb-1">
+                        <label><i class="fa-solid fa-chalkboard-user text-primary-small"></i> Assigned Instructor</label>
+                        <select name="instructor" required>
+                            <% (instructors || []).forEach(ins => { %>
+                                <option value="<%= ins.name %>" <%= lecture.instructorName === ins.name ? 'selected' : '' %>>
+                                    <%= ins.name %>
+                                </option>
+                            <% }); %>
+                        </select>
+                    </div>
+
+                    <div class="grid-2 mb-2">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-clock text-primary-small"></i> Duration (mins)</label>
+                            <input type="number" name="duration" value="<%= lecture.duration %>" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-calendar-day text-primary-small"></i> Date</label>
+                            <% 
+                                // Format date to YYYY-MM-DD for input[type="date"]
+                                const formattedDate = new Date(lecture.date).toISOString().split('T')[0];
+                            %>
+                            <input type="date" name="date" id="editDateInput" value="<%= formattedDate %>" required>
+                        </div>
+                    </div>
+
+                    <script>
+                        // Set min date to today
+                        const todayEdit = new Date().toISOString().split('T')[0];
+                        document.getElementById('editDateInput').setAttribute('min', todayEdit);
+                    </script>
+
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="/admin/manageLecture" class="btn-outline w-full text-center py-1">Cancel</a>
+                        <button type="submit" class="btn-primary w-full py-1 text-lg shadow-primary">
+                            Update Session
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
