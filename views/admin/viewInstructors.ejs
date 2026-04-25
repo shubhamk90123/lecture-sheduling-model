@@ -2,70 +2,54 @@
 <html lang="en">
 
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Instructors</title>
-    <link rel="stylesheet" href="/css/adminCss/viewInstructors.css">
+    <%- include('../partials/head') %>
   </head>
 
   <body>
 
-    <div class="container">
+    <%- include('../partials/sidebar') %>
 
-      <div class="header">
-        <h2>Manage Instructors</h2>
-        <a href="/admin/add-instructor" class="add-btn">+ Add Instructor</a>
-      </div>
+    <div class="main">
 
-      <table>
+      <%- include('../partials/topbar') %>
 
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Specialization</th>
-            <th>Phone</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+      <div class="container">
 
-        <tbody>
-          <% if (!instructors || instructors.length===0) { %>
+        <div class="header">
+          <h2>Manage Instructors</h2>
+        </div>
+
+        <table>
+          <thead>
             <tr>
-              <td colspan="6">No instructors found</td>
+              <th>No</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Specialization</th>
+              <th>Phone</th>
+              <th>Actions</th>
             </tr>
+          </thead>
+          <tbody>
+            <% if (!instructors || instructors.length === 0) { %>
+              <tr><td colspan="6">No instructors found</td></tr>
             <% } %>
+            <% (instructors || []).forEach((ins, idx) => { %>
+              <tr>
+                <td><%= idx + 1 %></td>
+                <td><%= ins.name %></td>
+                <td><%= ins.email %></td>
+                <td><%= ins.specialization || '—' %></td>
+                <td><%= ins.contact %></td>
+                <td>
+                  <button class="edit">Edit</button>
+                  <button class="delete">Delete</button>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
 
-              <% instructors.forEach((ins, idx)=> { %>
-                <tr>
-                  <td>
-                    <%= idx + 1 %>
-                  </td>
-                  <td>
-                    <%= ins.name %>
-                  </td>
-                  <td>
-                    <%= ins.email %>
-                  </td>
-                  <td>
-                    <%= ins.specialization || "-" %>
-                  </td>
-                  <td>
-                    <%= ins.contact %>
-                  </td>
-                  <td>
-                    <button class="edit">Edit</button>
-                    <button class="delete">Delete</button>
-                  </td>
-                </tr>
-                <% }) %>
-
-        </tbody>
-
-      </table>
-      <div class="dashboard">
-        <a href="/admin/dashboard">GO TO DASHBOARD</a>
       </div>
 
     </div>

@@ -1,177 +1,207 @@
-//Core Module
-const fs = require("fs");
-const path = require("path");
+const User = require("../model/user");
+const Course = require("../model/course");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../middleware/auth");
 
-const rootdir = require("../utils/path");
 
-//Local Module (Importing user data from page controller)
-const { userData } = require("./pageController");
 
-const courseDataPath = path.join(rootdir, "data", "courseData.json");
-const sheduleLecDataPath = path.join(rootdir, "data", "sheduleLecData.json");
-
-let courseData = [];
-let lectureData = [];
-
-try {
-  if (fs.existsSync(courseDataPath)) {
-    const raw = fs.readFileSync(courseDataPath, "utf-8");
-    const parsed = raw ? JSON.parse(raw) : [];
-    courseData = Array.isArray(parsed) ? parsed : [];
-  }
-} catch (error) {
-  console.error("Failed to load course data:", error.message);
-}
-
-try {
-  if (fs.existsSync(sheduleLecDataPath)) {
-    const raw = fs.readFileSync(sheduleLecDataPath, "utf-8");
-    const parsed = raw ? JSON.parse(raw) : [];
-    lectureData = Array.isArray(parsed) ? parsed : [];
-  }
-} catch (error) {
-  console.error("Failed to load lecture data:", error.message);
-}
-
-const getInstructors = () =>
-  userData.filter(
-    (user) => user.role && user.role.toLowerCase() === "instructor",
-  );
-
-const getDashboardData = (currentUserName = "User") => {
-  const instructors = getInstructors();
-
-  return {
-    currentUserName,
-    instructors,
-    courseData,
-    lectureData,
-    totalCourses: courseData.length,
-    totalInstructors: instructors.length,
-    totalSheduleLec: lectureData.length,
-  };
-};
-
-//Admin Dashboard---------------------------------------------------------------------------------------------------------------------------
-exports.getDashboard = (req, res) => {
-  const currentUserName = req.user?.name || "User";
-  res.render("admin/dashboard", getDashboardData(currentUserName));
-};
-
-//Add Course----------------------------------------------------------------------------------------------------------------------------------
-exports.getaddCourse = (req, res) => {
-  const instructors = getInstructors();
-  res.render("admin/addCourse", getDashboardData());
-};
-
-exports.postaddCourse = (req, res) => {
-  console.log(req.body, req.method);
-  const { courseName, courseCode, duration, startDate } = req.body;
-
-  if (!courseName || !courseCode || !duration) {
-    return res.status(400).render("admin/addCourse");
-  }
-
-  courseData.push({
-    courseName: courseName.trim(),
-    courseCode: courseCode.trim(),
-    duration: duration ? duration.trim() : "",
-    startDate: startDate || "",
-  });
-
-  fs.writeFile(courseDataPath, JSON.stringify(courseData, null, 2), (error) => {
-    if (error) {
-      console.error("Failed to save course data:", error.message);
-    }
-  });
-
-  return res.redirect("/admin/viewCourses");
-};
-
-//Manage Instructors---------------------------------------------------------------------------------------------------------------------------
-exports.viewInstructor = (req, res) => {
-  const instructors = getInstructors();
-  res.render("admin/viewInstructors", getDashboardData());
-};
-
-//All Courses-----------------------------------------------------------------------------------------------------------------------------------
-exports.allCourses = (req, res) => {
-  res.render("admin/allCourses", getDashboardData());
-};
-
-//Manage Lectures------------------------------------------------------------------------------------------------------------------------------
-exports.manageLec = (req, res) => {
-  res.render("admin/manageLec", getDashboardData());
-};
-
-//Shedule Lectures-----------------------------------------------------------------------------------------------------------------------------
-exports.getSheduleLec = (req, res) => {
-  const instructors = getInstructors();
-  res.render("admin/sheduleLec", {
-    instructors,
-    courseData,
+// My Profile
+exports.profile = async (req, res) => {
+  const currentUser = await User.findOne({ email: req.user?.email }).lean();
+  res.render("profile", {
+    role: "admin",
+    pageTitle: "My Profile",
+    currentUserName: req.user?.name || "Admin",
+    currentUser,
     errorMessage: "",
+    successMessage: ""
   });
 };
 
-exports.postSheduleLec = (req, res) => {
-  console.log(req.body, req.method);
-  const { courseName, courseCode, instructor, duration, startDate } = req.body;
-  const instructors = getInstructors();
+exports.updateProfile = async (req, res) => {
+  try {
+    const { name, email, currentPassword, newPassword } = req.body;
+    const user = await User.findById(req.user?.userId);
 
-  if (
-    !courseName?.trim() ||
-    !courseCode?.trim() ||
-    !instructor?.trim() ||
-    !duration?.trim() ||
-    !startDate
-  ) {
-    return res.status(400).render("admin/sheduleLec", {
-      instructors,
-      courseData,
-      errorMessage: "Please fill all required fields.",
-    });
-  }
+    user.name = name;
+    user.email = email;
 
-  const normalizedInstructor = instructor.trim().toLowerCase();
-  const normalizedDate = startDate;
-  const isBusy = lectureData.some(
-    (lec) =>
-      lec.instructor &&
-      lec.startDate &&
-      lec.instructor.trim().toLowerCase() === normalizedInstructor &&
-      lec.startDate === normalizedDate,
-  );
-
-  if (isBusy) {
-    return res.status(409).render("admin/sheduleLec", {
-      instructors,
-      courseData,
-      errorMessage: "Instructor is busy on this day. Try another day.",
-    });
-  }
-
-  lectureData.push({
-    courseName: courseName.trim(),
-    courseCode: courseCode.trim(),
-    instructor: instructor.trim(),
-    duration: duration.trim(),
-    startDate,
-  });
-
-  fs.writeFile(
-    sheduleLecDataPath,
-    JSON.stringify(lectureData, null, 2),
-    (error) => {
-      if (error) {
-        console.error("Failed to save lecture data:", error.message);
+    if (currentPassword && newPassword) {
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (isMatch) {
+        user.password = await bcrypt.hash(newPassword, 10);
       }
-    },
-  );
+    }
 
-  return res.redirect("/admin/dashboard");
+    await user.save();
+    
+    const token = jwt.sign({ userId: user._id, name: user.name, email: user.email, role: user.role }, JWT_SECRET);
+    res.cookie("authToken", token, { httpOnly: true });
+
+    res.render("profile", {
+      role: "admin", pageTitle: "My Profile", currentUserName: user.name,
+      currentUser: user.toObject(), errorMessage: "", successMessage: "Profile updated!"
+    });
+  } catch (error) {
+    res.status(500).send("Error updating profile");
+  }
 };
 
-exports.lectureData = lectureData;
-exports.courseData = courseData;
-exports.getInstructors = getInstructors;
+// Admin Dashboard
+exports.getDashboard = async (req, res) => {
+  try {
+    const instructors = await User.find({ role: "instructor" }).lean();
+    const courses = await Course.find({}).lean();
+    
+    // Flatten lectures from all courses into a simple list
+    let allLectures = [];
+    courses.forEach(c => {
+      if (c.lectures) {
+        c.lectures.forEach(l => {
+          allLectures.push({ ...l, courseName: c.name, courseCode: c.level });
+        });
+      }
+    });
+
+    res.render("dashboard", {
+      role: "admin",
+      pageTitle: "Admin Dashboard",
+      currentUserName: req.user?.name || "Admin",
+      instructors,
+      courseData: courses,
+      lectureData: allLectures,
+      totalCourses: courses.length,
+      totalInstructors: instructors.length,
+      totalSheduleLec: allLectures.length
+    });
+  } catch (error) {
+    res.status(500).send("Error loading dashboard");
+  }
+};
+
+// Add Course
+exports.getaddCourse = (req, res) => {
+  res.render("admin/addCourse", {
+    role: "admin",
+    pageTitle: "Add Course",
+    currentUserName: req.user?.name || "Admin"
+  });
+};
+
+exports.postaddCourse = async (req, res) => {
+  try {
+    const { name, level, description } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : "";
+
+    await new Course({ name, level, description, image }).save();
+    res.redirect("/admin/viewCourses");
+  } catch (error) {
+    res.status(500).send("Error adding course");
+  }
+};
+
+// View Instructors
+exports.viewInstructor = async (req, res) => {
+  const instructors = await User.find({ role: "instructor" }).lean();
+  res.render("admin/viewInstructors", {
+    role: "admin",
+    pageTitle: "Instructors",
+    currentUserName: req.user?.name || "Admin",
+    instructors
+  });
+};
+
+// View All Courses
+exports.allCourses = async (req, res) => {
+  const courses = await Course.find({}).lean();
+  res.render("admin/allCourses", {
+    role: "admin",
+    pageTitle: "All Courses",
+    currentUserName: req.user?.name || "Admin",
+    courseData: courses
+  });
+};
+
+// Manage Lectures
+exports.manageLec = async (req, res) => {
+  const courses = await Course.find({}).lean();
+  let allLectures = [];
+  courses.forEach(c => {
+    c.lectures.forEach(l => allLectures.push({ ...l, courseName: c.name, courseCode: c.level }));
+  });
+
+  res.render("admin/manageLec", {
+    role: "admin",
+    pageTitle: "Manage Lectures",
+    currentUserName: req.user?.name || "Admin",
+    lectureData: allLectures
+  });
+};
+
+// Schedule Lecture
+exports.getSheduleLec = async (req, res) => {
+  const instructors = await User.find({ role: "instructor" }).lean();
+  const courses = await Course.find({}).lean();
+  res.render("admin/sheduleLec", {
+    role: "admin",
+    pageTitle: "Schedule Lecture",
+    currentUserName: req.user?.name || "Admin",
+    instructors,
+    courseData: courses,
+    errorMessage: ""
+  });
+};
+
+exports.postSheduleLec = async (req, res) => {
+  try {
+    const { courseName, instructor, duration, startDate } = req.body;
+
+    // Find the instructor to get their ID
+    const instructorUser = await User.findOne({ name: instructor });
+    if (!instructorUser) {
+      const instructors = await User.find({ role: "instructor" }).lean();
+      const courses = await Course.find({}).lean();
+      return res.render("admin/sheduleLec", {
+        role: "admin", pageTitle: "Schedule Lecture", currentUserName: req.user?.name,
+        instructors, courseData: courses, errorMessage: "Instructor not found."
+      });
+    }
+
+    // Simple conflict check: find any course that has this instructor on this date
+    const conflict = await Course.findOne({
+      "lectures.instructorId": instructorUser._id,
+      "lectures.date": startDate
+    });
+
+    if (conflict) {
+      const instructors = await User.find({ role: "instructor" }).lean();
+      const courses = await Course.find({}).lean();
+      return res.render("admin/sheduleLec", {
+        role: "admin", pageTitle: "Schedule Lecture", currentUserName: req.user?.name,
+        instructors, courseData: courses, errorMessage: "Instructor is already busy on this date."
+      });
+    }
+
+    // Add the lecture to the course
+    await Course.updateOne(
+      { name: courseName },
+      { 
+        $push: { 
+          lectures: { 
+            instructorId: instructorUser._id, 
+            instructorName: instructorUser.name, 
+            date: startDate, 
+            duration 
+          } 
+        } 
+      }
+    );
+
+    res.redirect("/admin/dashboard");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error scheduling lecture");
+  }
+};
+

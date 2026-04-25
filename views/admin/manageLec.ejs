@@ -2,72 +2,56 @@
 <html lang="en">
 
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Instructors</title>
-    <link rel="stylesheet" href="/css/adminCss/manage-instructors.css">
+    <%- include('../partials/head') %>
   </head>
 
   <body>
 
-    <div class="container">
+    <%- include('../partials/sidebar') %>
 
-      <h2>All Assigned Lectures </h2>
+    <div class="main">
 
-      <table>
+      <%- include('../partials/topbar') %>
 
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Course Name</th>
-            <th>Level</th>
-            <th>Instructor</th>
-            <th>Duration</th>
-            <th>Start Date</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+      <div class="container">
 
-        <tbody>
-          <tr>
-            <% if (lectureData.length===0) { %>
-          <tr>
-            <td colspan="3">No instructors found</td>
-          </tr>
-          <% } %>
-            <% lectureData.forEach((ins, idx)=> { %>
+        <h2>All Assigned Lectures</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Course Name</th>
+              <th>Level</th>
+              <th>Instructor</th>
+              <th>Duration</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (!lectureData || lectureData.length === 0) { %>
+              <tr><td colspan="7">No lectures scheduled yet</td></tr>
+            <% } %>
+            <% (lectureData || []).forEach((lec, idx) => { %>
               <tr>
-                <td>
-                  <%= idx +1 %>
-                </td>
-                <td>
-                  <%= ins.courseName %>
-                </td>
-                <td>
-                  <%= ins.courseCode %>
-                </td>
-                <td>
-                  <%= ins.instructor %>
-                </td>
-                <td>
-                  <%= ins.duration %>
-                </td>
-                <td>
-                  <%= ins.startDate %>
-                </td>
+                <td><%= idx + 1 %></td>
+                <td><%= lec.courseName %></td>
+                <td><%= lec.courseCode || lec.level %></td>
+                <td><%= lec.instructor || lec.instructorName %></td>
+                <td><%= lec.duration %></td>
+                <td><%= lec.startDate || lec.date %></td>
                 <td>
                   <button class="edit">Edit</button>
                   <button class="delete">Delete</button>
                 </td>
               </tr>
-              <% }) %>
-                </tr>
-        </tbody>
+            <% }); %>
+          </tbody>
+        </table>
 
-      </table>
-      <div class="dashboard">
-        <a href="/admin/dashboard">GO TO DASHBOARD</a>
       </div>
+
     </div>
 
   </body>

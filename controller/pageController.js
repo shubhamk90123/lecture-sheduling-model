@@ -1,35 +1,11 @@
-//Core Module
-const fs = require("fs");
-const path = require("path");
-const crypto = require("crypto");
+//User Model
+const User = require("../model/user");
 
-//External Module
+//External Modules
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
-const rootdir = require("../utils/path");
 const { JWT_SECRET } = require("../middleware/auth");
-
-let userData = [];
-const userDataPath = path.join(rootdir, "data", "user.json");
-
-try {
-  if (fs.existsSync(userDataPath)) {
-    const raw = fs.readFileSync(userDataPath, "utf-8");
-    const parsed = raw ? JSON.parse(raw) : [];
-    userData = Array.isArray(parsed) ? parsed : [];
-  }
-} catch (error) {
-  console.error("Failed to load user data:", error.message);
-  userData = [];
-}
-
-const hashPassword = (password) =>
-  crypto.createHash("sha256").update(password).digest("hex");
-
-const createAuthCookie = (token) => {
-  const maxAge = 7 * 24 * 60 * 60;
-  return `authToken=${encodeURIComponent(token)}; Path=/; HttpOnly; Max-Age=${maxAge}; SameSite=Lax`;
-};
 
 //Root page=================================================================================================
 exports.rootPage = (req, res) => {
@@ -41,39 +17,39 @@ exports.getSignup = (req, res) => {
   res.render("signup");
 };
 
-exports.postSignup = (req, res) => {
-  console.log(req.body, req.method);
-  const { name, email, password, role, contact, specialization } = req.body;
+exports.postSignup = async (req, res) => {
+  try {
+    const { name, email, password, role, contact, specialization } = req.body;
 
-  if (!name || !email || !password || !role || !contact) {
-    return res.status(400).render("signup");
-  }
-
-  const normalizedEmail = email.trim().toLowerCase();
-  const userExists = userData.some(
-    (user) => user.email && user.email.toLowerCase() === normalizedEmail,
-  );
-
-  if (userExists) {
-    return res.status(409).render("signup");
-  }
-
-  userData.push({
-    name: name.trim(),
-    email: normalizedEmail,
-    password: hashPassword(password.trim()),
-    role: role.trim(),
-    contact: contact.trim(),
-    specialization: specialization ? specialization.trim() : "",
-  });
-
-  fs.writeFile(userDataPath, JSON.stringify(userData, null, 2), (error) => {
-    if (error) {
-      console.error("Failed to save user data:", error.message);
+    if (!name || !email || !password || !role || !contact) {
+      return res.status(400).render("signup");
     }
-  });
 
-  return res.redirect("/login");
+    const normalizedEmail = email.trim().toLowerCase();
+    const userExists = await User.findOne({ email: normalizedEmail });
+
+    if (userExists) {
+      return res.status(409).render("signup");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      name: name.trim(),
+      email: normalizedEmail,
+      password: hashedPassword,
+      role: role.trim(),
+      contact: contact.trim(),
+      specialization: specialization ? specialization.trim() : "",
+    });
+
+    await user.save();
+
+    return res.redirect("/login");
+  } catch (error) {
+    console.error("Signup error:", error.message);
+    return res.status(500).render("signup");
+  }
 };
 
 //Login Logic==============================================================================================
@@ -81,76 +57,76 @@ exports.getLogin = (req, res) => {
   res.render("login", { errorMessage: "" });
 };
 
-exports.postLogin = (req, res) => {
-  const { email, password, portal } = req.body;
+exports.postLogin = async (req, res) => {
+  try {
+    const { email, password, portal } = req.body;
 
-  if (!email || !password) {
-    return res
-      .status(400)
-      .render("login", { errorMessage: "Email and password are required." });
-  }
+    if (!email || !password) {
+      return res
+        .status(400)
+        .render("login", { errorMessage: "Email and password are required." });
+    }
 
-  const normalizedEmail = email.trim().toLowerCase();
-  const user = userData.find(
-    (entry) => entry.email && entry.email.toLowerCase() === normalizedEmail,
-  );
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = await User.findOne({ email: normalizedEmail });
 
-  if (!user) {
-    return res
-      .status(401)
-      .render("login", { errorMessage: "Invalid email or password." });
-  }
+    if (!user) {
+      return res
+        .status(401)
+        .render("login", { errorMessage: "Invalid email or password." });
+    }
 
-  const hashedInputPassword = hashPassword(password.trim());
-  const isValidPassword =
-    user.password === hashedInputPassword || user.password === password.trim();
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res
+        .status(401)
+        .render("login", { errorMessage: "Invalid email or password." });
+    }
 
-  if (!isValidPassword) {
-    return res
-      .status(401)
-      .render("login", { errorMessage: "Invalid email or password." });
-  }
+    const userRole = user.role.toLowerCase();
+    const requestedPortal = (portal || "").toLowerCase();
 
-  const userRole = (user.role || "").toLowerCase();
-  const requestedPortal = (portal || "").toLowerCase();
+    if (requestedPortal && requestedPortal !== userRole) {
+      return res.status(403).render("login", {
+        errorMessage: `You cannot sign in to the ${requestedPortal} portal with a ${userRole} account.`,
+      });
+    }
 
-  if (requestedPortal && requestedPortal !== userRole) {
-    return res.status(403).render("login", {
-      errorMessage: `You cannot sign in to the ${requestedPortal} portal with ${userRole} role.`,
-    });
-  }
-
-  const token = jwt.sign(
-    {
+    const payload = {
+      userId: user._id,
+      name: user.name,
       email: user.email,
       role: userRole,
-      name: user.name || "",
-    },
-    JWT_SECRET,
-    { expiresIn: "7d" },
-  );
+    };
 
-  res.setHeader("Set-Cookie", createAuthCookie(token));
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "7d" });
 
-  if (userRole === "admin") {
-    return res.redirect("/admin/dashboard");
+    res.cookie("authToken", token, {
+      httpOnly: true,
+      secure: false, // Set to true in production with HTTPS
+      sameSite: "Lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    if (userRole === "admin") {
+      return res.redirect("/admin/dashboard");
+    }
+
+    if (userRole === "instructor") {
+      return res.redirect("/instructor/instructorDashboard");
+    }
+
+    return res
+      .status(403)
+      .render("login", { errorMessage: "Role is not allowed for any portal." });
+
+  } catch (error) {
+    console.error("Login error:", error.message);
+    return res.status(500).render("login", { errorMessage: "Something went wrong. Please try again." });
   }
-
-  if (userRole === "instructor") {
-    return res.redirect("/instructor/instructorDashboard");
-  }
-
-  return res
-    .status(403)
-    .render("login", { errorMessage: "Role is not allowed for any portal." });
 };
 
 exports.logout = (req, res) => {
-  res.setHeader(
-    "Set-Cookie",
-    "authToken=; Path=/; HttpOnly; Max-Age=0; SameSite=Lax",
-  );
+  res.clearCookie("authToken");
   return res.redirect("/login");
 };
-
-exports.userData = userData;

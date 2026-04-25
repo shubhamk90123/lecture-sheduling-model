@@ -1,72 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body class="flex min-h-screen">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Course</title>
-    <link rel="stylesheet" href="/css/adminCss/sheduleLec.css">
-  </head>
+    <%- include('../partials/sidebar') %>
 
-  <body>
+    <main class="main-content">
+        <%- include('../partials/topbar') %>
 
-    <div class="container">
+        <div class="max-w-2xl mx-auto py-8">
+            <div class="table-container shadow-2xl shadow-primary/10 p-12">
+                <div class="text-center mb-12">
+                    <div class="w-20 h-20 bg-indigo-50 text-primary rounded-3xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-inner animate-bounce-slow">
+                        <i class="fa-solid fa-calendar-plus"></i>
+                    </div>
+                    <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Create Session</h2>
+                    <p class="text-slate-500 font-medium mt-2">Map an instructor to a course curriculum</p>
+                </div>
 
-      <h2>Shedule Lecture</h2>
-      <% if (typeof errorMessage !=="undefined" && errorMessage) { %>
-        <script>alert("<%= errorMessage %>")</script>
-        <% } %>
+                <% if (typeof errorMessage !== "undefined" && errorMessage) { %>
+                    <div class="mb-10 p-5 bg-rose-50 border-l-4 border-rose-500 text-rose-700 rounded-r-2xl flex items-center gap-4 animate-fade-in shadow-sm">
+                        <div class="w-10 h-10 bg-white/50 rounded-full flex items-center justify-center text-lg"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <span class="font-bold text-sm leading-snug"><%= errorMessage %></span>
+                    </div>
+                <% } %>
 
-          <form action="/admin/sheduleLec" method="POST">
+                <form action="/admin/sheduleLec" method="POST" class="space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="form-group mb-0">
+                            <label><i class="fa-solid fa-book text-[10px] mr-2 text-primary"></i> Curriculum Course</label>
+                            <select name="courseName" required>
+                                <option value="">Select Course</option>
+                                <% (courseData || []).forEach(course => { %>
+                                    <option value="<%= course.name %>"><%= course.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
 
-            <div class="form-group">
-              <label>Select The Course</label>
-              <select name="courseName" required>
-                <option value="">Select The Course</option>
-                <% courseData.forEach((course)=> { %>
-                  <option value="<%= course.courseName %>">
-                    <%= course.courseName %>
-                  </option>
-                  <% }) %>
-              </select>
+                        <div class="form-group mb-0">
+                            <label><i class="fa-solid fa-chalkboard-user text-[10px] mr-2 text-primary"></i> Assigned Faculty</label>
+                            <select name="instructor" required>
+                                <option value="">Select Faculty</option>
+                                <% (instructors || []).forEach(ins => { %>
+                                    <option value="<%= ins.name %>"><%= ins.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="form-group mb-0">
+                            <label><i class="fa-solid fa-clock text-[10px] mr-2 text-primary"></i> Duration (Mins)</label>
+                            <input type="number" name="duration" placeholder="e.g. 120" required>
+                        </div>
+
+                        <div class="form-group mb-0">
+                            <label><i class="fa-solid fa-calendar-day text-[10px] mr-2 text-primary"></i> Scheduled Date</label>
+                            <input type="date" name="startDate" required>
+                        </div>
+                    </div>
+
+                    <div class="pt-6">
+                        <button type="submit" class="btn-primary w-full justify-center py-5 text-base tracking-wider shadow-lg shadow-primary/30">
+                            <i class="fa-solid fa-calendar-check text-lg"></i>
+                            Finalize Schedule
+                        </button>
+                    </div>
+                </form>
             </div>
+            
+            <p class="text-center text-slate-400 text-xs font-bold mt-8 uppercase tracking-[0.2em]">
+                <i class="fa-solid fa-shield-halved mr-1"></i> Conflict-checked by system
+            </p>
+        </div>
+    </main>
 
-            <div class="form-group">
-              <label>Course Level</label>
-              <select name="courseCode" required>
-                <option value="">Select The Level</option>
-                <option value="Easy">Easy</option>
-                <option value="Hard">Hard</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Instructor</label>
-              <select name="instructor" required>
-                <option value="">Select The Instructor</option>
-                <% instructors.forEach((ins)=> { %>
-                  <option value="<%= ins.name %>">
-                    <%= ins.name %>
-                  </option>
-                  <% }) %>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Course Duration</label>
-              <input type="text" name="duration" placeholder="Example: 2 Hour" required>
-            </div>
-
-            <div class="form-group">
-              <label>Start Date</label>
-              <input type="date" name="startDate" required>
-            </div>
-            <button type="submit">Add Course</button>
-
-          </form>
-
-    </div>
-
-  </body>
-
+    <style>
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-bounce-slow {
+            animation: bounce-slow 3s infinite ease-in-out;
+        }
+    </style>
+</body>
 </html>

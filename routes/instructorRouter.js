@@ -10,7 +10,7 @@ const {
   profile,
   updateProfile,
   lectures,
-} = require("../controller/instructorContolller");
+} = require("../controller/instructorController");
 
 instructorRouter.use(requireRole("instructor"));
 

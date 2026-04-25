@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+require('dotenv').config();
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev_jwt_secret_change_me";
 
@@ -8,7 +9,7 @@ const parseCookies = (cookieHeader = "") => {
     if (!key) return acc;
     acc[key] = decodeURIComponent(rest.join("="));
     return acc;
-  }, {});
+  }, {}); 
 };
 
 const requireRole = (role) => {
