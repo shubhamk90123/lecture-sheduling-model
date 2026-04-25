@@ -1,82 +1,24 @@
-<aside class="w-[280px] bg-slate-950 text-white h-screen fixed left-0 top-0 z-[100] p-8 backdrop-blur-xl border-r border-white/5">
-  <div class="flex items-center gap-3 mb-12">
-    <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center text-white text-xl">
-      <i class="fa-solid fa-graduation-cap"></i>
-    </div>
-    <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">LMS Portal</span>
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <i class="fa-solid fa-graduation-cap"></i>
+    <span>LMS Portal</span>
   </div>
-
-  <nav>
-    <ul class="space-y-2">
-      <li>
-        <a href="/<%= role === 'admin' ? 'admin/dashboard' : 'instructor/instructorDashboard' %>" 
-           class="group flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 <%= pageTitle === 'Dashboard' ? 'bg-primary shadow-lg shadow-primary/40 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white hover:translate-x-1' %>">
-          <i class="fa-solid fa-house text-lg"></i>
-          <span class="font-bold">Dashboard</span>
-        </a>
-      </li>
-
-      <% if (role === 'admin') { %>
-        <li>
-          <a href="/admin/add-course" 
-             class="group flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 <%= pageTitle === 'Add Course' ? 'bg-primary shadow-lg shadow-primary/40 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white hover:translate-x-1' %>">
-            <i class="fa-solid fa-plus text-lg"></i>
-            <span class="font-bold">Add Course</span>
-          </a>
-        </li>
-        <li>
-          <a href="/admin/viewCourses" 
-             class="group flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 <%= pageTitle === 'All Courses' ? 'bg-primary shadow-lg shadow-primary/40 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white hover:translate-x-1' %>">
-            <i class="fa-solid fa-book-open text-lg"></i>
-            <span class="font-bold">All Courses</span>
-          </a>
-        </li>
-        <li>
-          <a href="/admin/viewInstructors" 
-             class="group flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 <%= pageTitle === 'Manage Instructors' ? 'bg-primary shadow-lg shadow-primary/40 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white hover:translate-x-1' %>">
-            <i class="fa-solid fa-chalkboard-user text-lg"></i>
-            <span class="font-bold">Instructors</span>
-          </a>
-        </li>
-        <li>
-          <a href="/admin/manageLecture" 
-             class="group flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 <%= pageTitle === 'Manage Lectures' ? 'bg-primary shadow-lg shadow-primary/40 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white hover:translate-x-1' %>">
-            <i class="fa-solid fa-list-check text-lg"></i>
-            <span class="font-bold">Manage Lectures</span>
-          </a>
-        </li>
-        <li>
-          <a href="/admin/sheduleLec" 
-             class="group flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 <%= pageTitle === 'Schedule Lecture' ? 'bg-primary shadow-lg shadow-primary/40 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white hover:translate-x-1' %>">
-            <i class="fa-solid fa-calendar-plus text-lg"></i>
-            <span class="font-bold">Schedule Lec</span>
-          </a>
-        </li>
-      <% } else { %>
-        <li>
-          <a href="/instructor/lectures" 
-             class="group flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 <%= pageTitle === 'My Lectures' ? 'bg-primary shadow-lg shadow-primary/40 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white hover:translate-x-1' %>">
-            <i class="fa-solid fa-book-reader text-lg"></i>
-            <span class="font-bold">My Lectures</span>
-          </a>
-        </li>
-      <% } %>
-      
-      <li>
-        <a href="/<%= role %>/profile" 
-           class="group flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 <%= pageTitle === 'My Profile' ? 'bg-primary shadow-lg shadow-primary/40 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white hover:translate-x-1' %>">
-          <i class="fa-solid fa-user-gear text-lg"></i>
-          <span class="font-bold">Profile</span>
-        </a>
-      </li>
-
-      <li class="pt-8">
-        <a href="/logout" 
-           class="flex items-center gap-4 px-4 py-3 rounded-xl text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-all duration-300">
-          <i class="fa-solid fa-right-from-bracket text-lg"></i>
-          <span class="font-bold">Logout</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
-</aside>
+  <ul>
+    <li>
+      <a href="/<%= role === 'admin' ? 'admin/dashboard' : 'instructor/instructorDashboard' %>" class="<%= pageTitle === 'Dashboard' ? 'active' : '' %>">
+        <i class="fa-solid fa-house"></i> <span>Dashboard</span>
+      </a>
+    </li>
+    <% if (role === 'admin') { %>
+      <li><a href="/admin/add-course" class="<%= pageTitle === 'Add Course' ? 'active' : '' %>"><i class="fa-solid fa-plus"></i> <span>Add Course</span></a></li>
+      <li><a href="/admin/viewCourses" class="<%= pageTitle === 'All Courses' ? 'active' : '' %>"><i class="fa-solid fa-book-open"></i> <span>All Courses</span></a></li>
+      <li><a href="/admin/viewInstructors" class="<%= pageTitle === 'Instructors' ? 'active' : '' %>"><i class="fa-solid fa-chalkboard-user"></i> <span>Instructors</span></a></li>
+      <li><a href="/admin/manageLecture" class="<%= pageTitle === 'Manage Lectures' ? 'active' : '' %>"><i class="fa-solid fa-list-check"></i> <span>Manage Lectures</span></a></li>
+      <li><a href="/admin/sheduleLec" class="<%= pageTitle === 'Schedule Lecture' ? 'active' : '' %>"><i class="fa-solid fa-calendar-plus"></i> <span>Schedule Lec</span></a></li>
+    <% } else { %>
+      <li><a href="/instructor/lectures" class="<%= pageTitle === 'My Lectures' ? 'active' : '' %>"><i class="fa-solid fa-book-reader"></i> <span>My Lectures</span></a></li>
+    <% } %>
+    <li><a href="/<%= role %>/profile" class="<%= pageTitle === 'My Profile' ? 'active' : '' %>"><i class="fa-solid fa-user-gear"></i> <span>Profile</span></a></li>
+    <li><a href="/logout" style="margin-top: 2rem; color: #f87171;"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></a></li>
+  </ul>
+</div>

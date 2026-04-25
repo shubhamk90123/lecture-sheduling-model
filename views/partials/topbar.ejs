@@ -1,16 +1,16 @@
-<header class="flex justify-between items-center mb-10 animate-fade-in">
+<div class="topbar">
   <div>
-    <h1 class="text-3xl font-extrabold tracking-tight text-slate-900"><%= pageTitle %></h1>
-    <p class="text-slate-500 text-sm font-medium mt-1">Manage your academic schedule with ease</p>
+    <h1 style="margin: 0;"><%= pageTitle %></h1>
+    <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 4px;">Manage your academic schedule with ease</p>
   </div>
 
-  <div class="flex items-center gap-4 bg-white p-2 pr-6 rounded-full shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 group cursor-pointer">
-    <div class="w-10 h-10 bg-gradient-to-tr from-primary to-primary-light rounded-full flex items-center justify-center text-white font-bold text-lg shadow-inner group-hover:scale-110 transition-transform duration-300">
+  <div class="user-profile">
+    <div class="user-avatar">
       <%= currentUserName ? currentUserName.charAt(0).toUpperCase() : 'U' %>
     </div>
-    <div>
-      <span class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-widest leading-none mb-1">Welcome back</span>
-      <span class="block text-sm font-bold text-slate-700 leading-none"><%= currentUserName %></span>
+    <div class="user-info">
+      <span style="font-size: 0.7rem; color: var(--text-muted); display: block; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Welcome back</span>
+      <span style="font-weight: 700; color: var(--text-main);"><%= currentUserName %></span>
     </div>
   </div>
-</header>
+</div>

@@ -2,125 +2,148 @@
 <html lang="en">
 <head>
     <%- include('partials/head') %>
+    <style>
+        .profile-container {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 2.5rem;
+            margin-top: 1rem;
+        }
+        .profile-sidebar {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+        .profile-main {
+            background: white;
+            padding: 3rem;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+        }
+        .avatar-large {
+            width: 110px;
+            height: 110px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 28px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            font-weight: 800;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+            border: 4px solid white;
+        }
+    </style>
 </head>
-<body class="flex min-h-screen">
-
+<body>
     <%- include('partials/sidebar') %>
 
-    <main class="main-content">
+    <div class="main">
         <%- include('partials/topbar') %>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto">
-            <!-- Left Panel: Profile Card -->
-            <div class="lg:col-span-4">
-                <div class="bg-white rounded-[32px] overflow-hidden border border-slate-200 shadow-sm transition-all hover:shadow-xl">
-                    <div class="h-32 bg-gradient-to-br from-slate-900 to-slate-800 relative">
-                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+        <div class="profile-container" style="max-width: 1150px; margin: 0 auto;">
+            <!-- Left Panel -->
+            <div class="profile-sidebar">
+                <div style="height: 100px; background: var(--sidebar-bg);"></div>
+                <div style="padding: 0 2rem 2.5rem; margin-top: -55px;">
+                    <div class="avatar-large">
+                        <%= currentUser.name.charAt(0).toUpperCase() %>
                     </div>
-                    <div class="px-8 pb-8 -mt-12 relative text-center">
-                        <div class="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-3xl mx-auto flex items-center justify-center text-3xl text-white font-extrabold shadow-xl border-4 border-white mb-4 transition-transform hover:scale-105 duration-300">
-                            <%= currentUser.name.charAt(0).toUpperCase() %>
-                        </div>
-                        <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight"><%= currentUser.name %></h2>
-                        <span class="inline-block mt-1 px-4 py-1 bg-indigo-50 text-indigo-600 rounded-full text-[10px] font-extrabold uppercase tracking-widest border border-indigo-100"><%= role %></span>
-                        
-                        <div class="mt-8 pt-8 border-t border-slate-100 text-left space-y-5">
-                            <div class="flex items-center gap-4 group">
-                                <div class="w-10 h-10 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-                                    <i class="fa-solid fa-envelope"></i>
-                                </div>
-                                <div class="overflow-hidden">
-                                    <span class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-widest leading-none mb-1">Email</span>
-                                    <span class="block text-sm font-bold text-slate-700 truncate"><%= currentUser.email %></span>
-                                </div>
+                    <h2 style="font-weight: 800; margin-bottom: 5px; font-size: 1.5rem;"><%= currentUser.name %></h2>
+                    <span class="badge" style="background: #e0e7ff; color: #4338ca; text-transform: uppercase;"><%= role %></span>
+                    
+                    <div style="margin-top: 2.5rem; text-align: left; border-top: 1px solid var(--border); padding-top: 2rem;">
+                        <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 35px; height: 35px; background: #f8fafc; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); border: 1px solid #f1f5f9;"><i class="fa-solid fa-envelope" style="font-size: 0.9rem;"></i></div>
+                            <div>
+                                <span style="display:block; font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em;">Email Address</span>
+                                <span style="font-weight: 700; font-size: 0.9rem; color: var(--text-main);"><%= currentUser.email %></span>
                             </div>
-                            <div class="flex items-center gap-4 group">
-                                <div class="w-10 h-10 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-                                    <i class="fa-solid fa-calendar-days"></i>
-                                </div>
-                                <div class="overflow-hidden">
-                                    <span class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-widest leading-none mb-1">Joined</span>
-                                    <span class="block text-sm font-bold text-slate-700"><%= new Date(currentUser.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) %></span>
-                                </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 35px; height: 35px; background: #f8fafc; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); border: 1px solid #f1f5f9;"><i class="fa-solid fa-calendar-days" style="font-size: 0.9rem;"></i></div>
+                            <div>
+                                <span style="display:block; font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em;">Member Since</span>
+                                <span style="font-weight: 700; font-size: 0.9rem; color: var(--text-main);"><%= new Date(currentUser.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) %></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Panel: Form -->
-            <div class="lg:col-span-8">
-                <div class="table-container shadow-lg shadow-slate-200/50 p-10">
-                    <div class="mb-10">
-                        <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Account Settings</h2>
-                        <p class="text-slate-500 font-medium text-sm mt-1">Manage your identity and security preferences.</p>
+            <!-- Right Panel -->
+            <div class="profile-main">
+                <div style="margin-bottom: 2.5rem;">
+                    <h2 style="font-size: 1.75rem; font-weight: 800; letter-spacing: -0.025em; margin: 0;">Account Settings</h2>
+                    <p style="color: var(--text-muted); margin-top: 4px; font-weight: 500;">Update your personal profile and account security</p>
+                </div>
+
+                <% if (typeof successMessage !== "undefined" && successMessage) { %>
+                    <div style="background: #dcfce7; color: #166534; padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 2rem; font-weight: 700; border-left: 4px solid #22c55e;">
+                        <i class="fa-solid fa-circle-check" style="margin-right: 8px;"></i> <%= successMessage %>
+                    </div>
+                <% } %>
+                <% if (typeof errorMessage !== "undefined" && errorMessage) { %>
+                    <div class="error-msg" style="padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 2rem; font-weight: 700; border-left: 4px solid #ef4444;">
+                        <i class="fa-solid fa-triangle-exclamation" style="margin-right: 8px;"></i> <%= errorMessage %>
+                    </div>
+                <% } %>
+
+                <form action="/<%= role %>/update-profile" method="POST">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.5rem;">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-user" style="margin-right: 8px; font-size: 0.7rem; color: var(--primary);"></i> Full Name</label>
+                            <input type="text" name="name" value="<%= currentUser.name %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-envelope" style="margin-right: 8px; font-size: 0.7rem; color: var(--primary);"></i> Email Address</label>
+                            <input type="email" name="email" value="<%= currentUser.email %>" required>
+                        </div>
                     </div>
 
-                    <% if (successMessage) { %>
-                        <div class="mb-8 p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 rounded-r-xl flex items-center gap-3 animate-fade-in">
-                            <i class="fa-solid fa-circle-check"></i>
-                            <span class="font-bold text-sm"><%= successMessage %></span>
+                    <% if (role === 'instructor') { %>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.5rem;">
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-award" style="margin-right: 8px; font-size: 0.7rem; color: var(--primary);"></i> Specialization</label>
+                                <input type="text" name="specialization" value="<%= currentUser.specialization %>" placeholder="e.g. Web Development">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-phone" style="margin-right: 8px; font-size: 0.7rem; color: var(--primary);"></i> Contact Number</label>
+                                <input type="text" name="phone" value="<%= currentUser.contact %>" placeholder="+1 234 567 890">
+                            </div>
                         </div>
                     <% } %>
-                    <% if (errorMessage) { %>
-                        <div class="mb-8 p-4 bg-rose-50 border-l-4 border-rose-500 text-rose-700 rounded-r-xl flex items-center gap-3 animate-fade-in">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                            <span class="font-bold text-sm"><%= errorMessage %></span>
-                        </div>
-                    <% } %>
 
-                    <form action="/<%= role %>/update-profile" method="POST" class="space-y-8">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="form-group mb-0">
-                                <label><i class="fa-solid fa-user text-[10px] mr-2 text-primary"></i> Full Name</label>
-                                <input type="text" name="name" value="<%= currentUser.name %>" required>
+                    <div style="margin-top: 2rem; padding-top: 2.5rem; border-top: 1px solid var(--border);">
+                        <h4 style="margin-bottom: 1.5rem; font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-shield-halved" style="color: var(--primary);"></i> Security & Password
+                        </h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <input type="password" name="currentPassword" placeholder="Required for changes">
                             </div>
-                            <div class="form-group mb-0">
-                                <label><i class="fa-solid fa-at text-[10px] mr-2 text-primary"></i> Email Address</label>
-                                <input type="email" name="email" value="<%= currentUser.email %>" required>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" name="newPassword" placeholder="Min. 6 characters">
                             </div>
                         </div>
+                    </div>
 
-                        <% if (role === 'instructor') { %>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="form-group mb-0">
-                                    <label><i class="fa-solid fa-award text-[10px] mr-2 text-primary"></i> Specialization</label>
-                                    <input type="text" name="specialization" value="<%= currentUser.specialization %>" placeholder="e.g. Full Stack Developer">
-                                </div>
-                                <div class="form-group mb-0">
-                                    <label><i class="fa-solid fa-phone text-[10px] mr-2 text-primary"></i> Contact Number</label>
-                                    <input type="text" name="phone" value="<%= currentUser.contact %>" placeholder="+1 234 567 890">
-                                </div>
-                            </div>
-                        <% } %>
-
-                        <div class="pt-8 border-t border-slate-100">
-                            <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-3">
-                                <span class="w-8 h-8 bg-primary/10 text-primary rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-shield-halved"></i></span>
-                                Security & Password
-                            </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="form-group mb-0">
-                                    <label>Current Password</label>
-                                    <input type="password" name="currentPassword" placeholder="Required for changes">
-                                </div>
-                                <div class="form-group mb-0">
-                                    <label>New Password</label>
-                                    <input type="password" name="newPassword" placeholder="Min. 6 characters">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="pt-6 flex justify-end">
-                            <button type="submit" class="btn-primary w-full md:w-auto px-10 py-4 text-sm tracking-wide">
-                                <i class="fa-solid fa-cloud-arrow-up"></i> Save Profile Changes
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    <div style="margin-top: 3rem; display: flex; justify-content: flex-end;">
+                        <button type="submit" class="btn-primary" style="padding: 14px 40px; font-size: 1rem; border-radius: 14px; box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);">
+                            Save Profile Changes
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
-    </main>
-
+    </div>
 </body>
 </html>
