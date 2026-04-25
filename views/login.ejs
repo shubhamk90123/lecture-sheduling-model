@@ -1,63 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/pageCss/login.css">
-    <title>Modern Login Page</title>
-  </head>
+    <head>
+        <%- include('partials/head') %>
+    </head>
 
-  <body>
+    <body class="auth-page">
 
-    <div class="container" id="container">
-      <% if (typeof errorMessage !=="undefined" && errorMessage) { %>
-        <script>
-          alert("<%= errorMessage %>")
-        </script>
-        <% } %>
-          <div class="form-container sign-up">
-            <form action="/login" method="POST">
-              <h1>Admin Login</h1>
-              <input type="email" name="email" placeholder="Email" required>
-              <input type="password" name="password" placeholder="Password" required>
-              <input type="hidden" name="portal" value="admin">
-              <button type="submit">Sign In</button>
-              <hr />
-              <p>Sign up if you are new</p>
-              <a href="/signup">Sign Up</a>
-            </form>
-          </div>
+        <div class="slider-container" id="slider-container">
+            <!-- Admin Login Form -->
+            <div class="slider-form-container sign-up-panel">
+                <form action="/login" method="POST">
+                    <div class="portal-header-icon admin flex-center">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h1 class="auth-title">Admin Portal</h1>
+                    <p class="auth-subtitle">Management & Oversight Access</p>
 
-          <div class="form-container sign-in">
-            <form action="/login" method="POST">
-              <h1>Instructor Login</h1>
-              <input type="email" name="email" placeholder="Email" required>
-              <input type="password" name="password" placeholder="Password" required>
-              <input type="hidden" name="portal" value="instructor">
-              <button type="submit">Sign In</button>
-              <hr />
-              <p>Sign up if you are new</p>
-              <a href="/signup">Sign Up</a>
-            </form>
-          </div>
+                    <input type="email" name="email" placeholder="Admin Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="hidden" name="portal" value="admin">
 
-          <div class="toggle-container">
-            <div class="toggle">
-              <div class="toggle-panel toggle-left">
-                <h1>Instructor Login</h1>
-                <p>Click the button below to access the instructor panel</p>
-                <button type="button" class="hidden" id="login">Sign In</button>
-              </div>
-              <div class="toggle-panel toggle-right">
-                <h1>Admin Login</h1>
-                <p>Click the button below to access the admin panel</p>
-                <button type="button" class="hidden" id="register">Sign In</button>
-              </div>
+
+                    <button type="submit" class="w-full">Admin Sign In</button>
+                    <p class="auth-footer-text">
+                        Don't have an account? <a href="/signup" style="color: var(--primary);">Sign Up</a>
+                    </p>
+                </form>
             </div>
-          </div>
-    </div>
-    <script src="/js/pageJS/login.js"></script>
-  </body>
+
+            <!-- Instructor Login Form -->
+            <div class="slider-form-container sign-in-panel">
+                <form action="/login" method="POST">
+                    <div class="portal-header-icon instructor flex-center">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <h1 class="auth-title">Instructor Portal</h1>
+                    <p class="auth-subtitle">Schedule & Curriculum Access</p>
+
+                    <input type="email" name="email" placeholder="Instructor Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="hidden" name="portal" value="instructor">
+
+                    <button type="submit" class="w-full">Instructor Sign In</button>
+                    <p class="auth-footer-text">
+                        Don't have an account? <a href="/signup" style="color: #3f51b5;">Sign Up</a>
+                    </p>
+                </form>
+            </div>
+
+            <!-- Toggle Overlay -->
+            <div class="toggle-slider-container">
+                <div class="toggle-content">
+                    <div class="toggle-pane toggle-left-pane">
+                        <h1 class="mb-1" style="font-weight: 800; font-size: 2rem;">Back to Instructors?</h1>
+                        <p>Click below if you are a faculty member trying to access your schedule.</p>
+                        <button class="hidden" id="login-btn">Instructor Portal</button>
+                    </div>
+                    <div class="toggle-pane toggle-right-pane">
+                        <h1 class="mb-1" style="font-weight: 800; font-size: 2rem;">Admin Access?</h1>
+                        <p>Click below to switch to the administrative management dashboard.</p>
+                        <button class="hidden" id="register-btn">Admin Portal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Toast -->
+        <% if (typeof errorMessage !=="undefined" && errorMessage) { %>
+            <div class="toast-error">
+                <i class="fa-solid fa-circle-exclamation" style="margin-right: 10px;"></i>
+                <%= errorMessage %>
+            </div>
+            <% } %>
+
+                <script>
+                    const container = document.getElementById('slider-container');
+                    const registerBtn = document.getElementById('register-btn');
+                    const loginBtn = document.getElementById('login-btn');
+
+                    registerBtn.addEventListener('click', () => {
+                        container.classList.add("active");
+                    });
+
+                    loginBtn.addEventListener('click', () => {
+                        container.classList.remove("active");
+                    });
+                </script>
+
+    </body>
 
 </html>

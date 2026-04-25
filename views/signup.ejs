@@ -1,88 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body class="auth-page">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="/css/pageCss/signup.css">
-  </head>
-
-  <body>
-
-    <div class="signup-container">
-      <% if (typeof errorMessage !=="undefined" && errorMessage) { %>
-        <script>
-          alert("<%= errorMessage %>")
-        </script>
-        <% } %>
-
-      <h2>Create Account</h2>
-
-      <form action="/signup" method="POST">
-
-        <div class="input-group">
-          <label>Full Name</label>
-          <input type="text" name="name" placeholder="Enter your name" required>
+    <div class="auth-card" style="max-width: 650px;">
+        <div class="portal-header-icon admin flex-center" style="margin: 0 auto 1.5rem; width: 60px; height: 60px;">
+            <i class="fa-solid fa-user-plus"></i>
         </div>
+        <h2 class="auth-title">Create Account</h2>
+        <p class="auth-subtitle">Join the scheduling network and manage your sessions.</p>
 
-        <div class="input-group">
-          <label>Email</label>
-          <input type="email" name="email" placeholder="Enter your email" required>
-        </div>
+        <form action="/signup" method="POST" class="text-left">
+            <div class="grid-2 grid-gap-small mb-1">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="name" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" name="email" placeholder="john@example.com" required>
+                </div>
+            </div>
 
-        <div class="input-group">
-          <label>Password</label>
-          <input type="password" name="password" placeholder="Enter password" required>
-        </div>
+            <div class="grid-2 grid-gap-small mb-1">
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="••••••••" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" name="confirmPassword" placeholder="••••••••" required>
+                </div>
+            </div>
 
-        <div class="input-group">
-          <label>Confirm Password</label>
-          <input type="password" name="confirmPassword" placeholder="Confirm password" required>
-        </div>
+            <div class="grid-2 grid-gap-small mb-1">
+                <div class="form-group">
+                    <label>Account Role</label>
+                    <select name="role" id="roleSelect" required onchange="toggleSpecialization(this.value)">
+                        <option value="">Select Role</option>
+                        <option value="admin">Administrator</option>
+                        <option value="instructor">Faculty Member</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Contact Number</label>
+                    <input type="tel" name="contact" placeholder="10-digit number" required>
+                </div>
+            </div>
 
-        <div class="input-group">
-          <label>Role</label>
+            <div class="form-group mb-2" id="specializationGroup" style="display: none;">
+                <label>Area of Specialization</label>
+                <select name="specialization" id="specializationSelect">
+                    <option value="">Select Domain</option>
+                    <option value="Web Development">Web Development</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="Cyber Security">Cyber Security</option>
+                    <option value="DBMS">DBMS</option>
+                    <option value="Green Computing">Green Computing</option>
+                </select>
+            </div>
 
-          <select name="role" id="roleSelect" required>
-            <option value="">Select Role</option>
-            <option value="admin">Admin</option>
-            <option value="instructor">Instructor</option>
-          </select>
-
-        </div>
-
-
-        <div class="input-group" id="specializationGroup">
-          <label>Specialization</label>
-          <select name="specialization" id="specializationSelect" required>
-            <option value="">Select The Subject</option>
-            <option value="Web Development">Web Development</option>
-            <option value="Data Science">Data Science</option>
-            <option value="Cyber Security">Cyber Security</option>
-            <option value="DBMS">DBMS</option>
-            <option value="Green Computing">Green Computing</option>
-          </select>
-        </div>
-
-        <div class="input-group">
-          <label>Contact details</label>
-          <input type="tel" name="contact" placeholder="Enter 10 digit phone number" required>
-        </div>
-
-
-
-        <button type="submit">Sign Up</button>
-
-        <p class="login-link">
-          Already have an account?
-          <a href="/login"> <b><i>Login</i></b></a>
-        </p>
-
-      </form>
-
+            <button type="submit" class="btn-primary w-full py-1">Create Account</button>
+            
+            <p class="text-center mt-2 auth-footer-text">
+                Already registered? <a href="/login" style="color: var(--primary);">Log In</a>
+            </p>
+        </form>
     </div>
-    <script src="/js/pageJS/signUp.js"></script>
-  </body>
 
+    <script>
+        function toggleSpecialization(role) {
+            const specGroup = document.getElementById('specializationGroup');
+            const specSelect = document.getElementById('specializationSelect');
+            if (role === 'instructor') {
+                specGroup.style.display = 'block';
+                specSelect.required = true;
+            } else {
+                specGroup.style.display = 'none';
+                specSelect.required = false;
+            }
+        }
+    </script>
+
+    <% if (typeof errorMessage !== "undefined" && errorMessage) { %>
+        <div class="toast-error">
+            <i class="fa-solid fa-circle-exclamation" style="margin-right: 10px;"></i> <%= errorMessage %>
+        </div>
+    <% } %>
+
+</body>
 </html>

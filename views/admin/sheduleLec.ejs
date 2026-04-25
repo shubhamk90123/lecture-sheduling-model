@@ -10,26 +10,26 @@
     <div class="main">
         <%- include('../partials/topbar') %>
 
-        <div style="max-width: 650px; margin: 3rem auto;">
-            <div class="table-container" style="padding: 3rem;">
-                <div style="text-align: center; margin-bottom: 3rem;">
-                    <div style="width: 75px; height: 75px; background: #eef2ff; color: var(--primary); border-radius: 24px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
+        <div class="form-card-container">
+            <div class="table-container p-3">
+                <div class="text-center mb-2">
+                    <div class="form-header-icon schedule flex-center">
                         <i class="fa-solid fa-calendar-plus"></i>
                     </div>
-                    <h2 style="font-size: 1.85rem; font-weight: 800; letter-spacing: -0.025em; margin: 0;">Schedule New Session</h2>
-                    <p style="color: var(--text-muted); margin-top: 8px; font-weight: 500;">Map a faculty member to a specific course module</p>
+                    <h2 class="form-title">Schedule New Session</h2>
+                    <p class="form-subtitle">Map a faculty member to a specific course module</p>
                 </div>
 
                 <% if (typeof errorMessage !== "undefined" && errorMessage) { %>
-                    <div class="error-msg" style="padding: 1.25rem; border-radius: 14px; margin-bottom: 2.5rem; border-left: 5px solid #ef4444; background: #fef2f2; font-weight: 700; color: #991b1b; display: flex; align-items: center; gap: 12px;">
+                    <div class="error-msg mb-2">
                         <i class="fa-solid fa-triangle-exclamation"></i> <%= errorMessage %>
                     </div>
                 <% } %>
 
                 <form action="/admin/sheduleLec" method="POST">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.5rem;">
+                    <div class="grid-2 mb-1">
                         <div class="form-group">
-                            <label><i class="fa-solid fa-book" style="margin-right: 8px; color: var(--primary); font-size: 0.7rem;"></i> Course Name</label>
+                            <label><i class="fa-solid fa-book text-primary-small"></i> Course Name</label>
                             <select name="courseName" required>
                                 <option value="">Select Course</option>
                                 <% (courseData || []).forEach(course => { %>
@@ -39,7 +39,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label><i class="fa-solid fa-chalkboard-user" style="margin-right: 8px; color: var(--primary); font-size: 0.7rem;"></i> Instructor</label>
+                            <label><i class="fa-solid fa-chalkboard-user text-primary-small"></i> Instructor</label>
                             <select name="instructor" required>
                                 <option value="">Select Instructor</option>
                                 <% (instructors || []).forEach(ins => { %>
@@ -49,24 +49,24 @@
                         </div>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem;">
+                    <div class="grid-2 mb-2">
                         <div class="form-group">
-                            <label><i class="fa-solid fa-clock" style="margin-right: 8px; color: var(--primary); font-size: 0.7rem;"></i> Duration (mins)</label>
+                            <label><i class="fa-solid fa-clock text-primary-small"></i> Duration (mins)</label>
                             <input type="number" name="duration" placeholder="e.g. 60" required>
                         </div>
 
                         <div class="form-group">
-                            <label><i class="fa-solid fa-calendar-day" style="margin-right: 8px; color: var(--primary); font-size: 0.7rem;"></i> Start Date</label>
+                            <label><i class="fa-solid fa-calendar-day text-primary-small"></i> Start Date</label>
                             <input type="date" name="startDate" required>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 18px; font-size: 1.1rem; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);">
-                        <i class="fa-solid fa-check-circle" style="margin-right: 10px;"></i> Finalize Schedule
+                    <button type="submit" class="btn-primary w-full py-1 text-lg shadow-primary">
+                        <i class="fa-solid fa-check-circle mr-1"></i> Finalize Schedule
                     </button>
                 </form>
             </div>
-            <p style="text-align: center; color: var(--text-muted); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2rem;">
+            <p class="text-center text-muted-caps mt-2">
                 <i class="fa-solid fa-shield-halved"></i> Conflict detection active
             </p>
         </div>

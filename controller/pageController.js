@@ -9,12 +9,12 @@ const { JWT_SECRET } = require("../middleware/auth");
 
 //Root page=================================================================================================
 exports.rootPage = (req, res) => {
-  res.render("rootPage");
+  res.render("rootPage", { pageTitle: "Welcome" });
 };
 
 //Signup Logic=============================================================================================
 exports.getSignup = (req, res) => {
-  res.render("signup");
+  res.render("signup", { pageTitle: "Create Account", errorMessage: "" });
 };
 
 exports.postSignup = async (req, res) => {
@@ -22,14 +22,14 @@ exports.postSignup = async (req, res) => {
     const { name, email, password, role, contact, specialization } = req.body;
 
     if (!name || !email || !password || !role || !contact) {
-      return res.status(400).render("signup");
+      return res.status(400).render("signup", { pageTitle: "Create Account", errorMessage: "All fields are required." });
     }
 
     const normalizedEmail = email.trim().toLowerCase();
     const userExists = await User.findOne({ email: normalizedEmail });
 
     if (userExists) {
-      return res.status(409).render("signup");
+      return res.status(409).render("signup", { pageTitle: "Create Account", errorMessage: "User already exists." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -48,13 +48,13 @@ exports.postSignup = async (req, res) => {
     return res.redirect("/login");
   } catch (error) {
     console.error("Signup error:", error.message);
-    return res.status(500).render("signup");
+    return res.status(500).render("signup", { pageTitle: "Create Account", errorMessage: "Error creating account." });
   }
 };
 
 //Login Logic==============================================================================================
 exports.getLogin = (req, res) => {
-  res.render("login", { errorMessage: "" });
+  res.render("login", { pageTitle: "Login", errorMessage: "" });
 };
 
 exports.postLogin = async (req, res) => {
@@ -64,7 +64,7 @@ exports.postLogin = async (req, res) => {
     if (!email || !password) {
       return res
         .status(400)
-        .render("login", { errorMessage: "Email and password are required." });
+        .render("login", { pageTitle: "Login", errorMessage: "Email and password are required." });
     }
 
     const normalizedEmail = email.trim().toLowerCase();
@@ -73,14 +73,14 @@ exports.postLogin = async (req, res) => {
     if (!user) {
       return res
         .status(401)
-        .render("login", { errorMessage: "Invalid email or password." });
+        .render("login", { pageTitle: "Login", errorMessage: "Invalid email or password." });
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       return res
         .status(401)
-        .render("login", { errorMessage: "Invalid email or password." });
+        .render("login", { pageTitle: "Login", errorMessage: "Invalid email or password." });
     }
 
     const userRole = user.role.toLowerCase();
@@ -88,6 +88,7 @@ exports.postLogin = async (req, res) => {
 
     if (requestedPortal && requestedPortal !== userRole) {
       return res.status(403).render("login", {
+        pageTitle: "Login",
         errorMessage: `You cannot sign in to the ${requestedPortal} portal with a ${userRole} account.`,
       });
     }
@@ -118,11 +119,11 @@ exports.postLogin = async (req, res) => {
 
     return res
       .status(403)
-      .render("login", { errorMessage: "Role is not allowed for any portal." });
+      .render("login", { pageTitle: "Login", errorMessage: "Role is not allowed for any portal." });
 
   } catch (error) {
     console.error("Login error:", error.message);
-    return res.status(500).render("login", { errorMessage: "Something went wrong. Please try again." });
+    return res.status(500).render("login", { pageTitle: "Login", errorMessage: "Something went wrong. Please try again." });
   }
 };
 

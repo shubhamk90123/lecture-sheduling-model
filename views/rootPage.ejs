@@ -1,31 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture Scheduling System</title>
-    <link rel="stylesheet" href="/css/pageCss/root.css">
-  </head>
+    <head>
+        <%- include('partials/head') %>
+    </head>
 
-  <body>
+    <body class="auth-page">
 
-    <div class="hero">
+        <div class="hero-section">
+            <div class="hero-icon-large flex-center">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <h1>Lecture Scheduling Model.</h1>
+            <p>
+                Streamline your academic management with conflict-aware scheduling,
+                instructor tracking, and real-time curriculum updates.
+            </p>
 
+            <div class="btn-group">
+                <a href="/login" class="btn-primary px-3 py-1 text-lg">Get Started</a>
+                <a href="/signup" class="btn-outline px-3 py-1 text-lg">Create Account</a>
+            </div>
 
-      <h1>Welcome to Lecture Scheduling System</h1>
+            <div class="hero-stats-container">
+                <div class="hero-stat-item">
+                    <div class="hero-stat-value">100%</div>
+                    <div class="hero-stat-label">Accuracy</div>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat-item">
+                    <div class="hero-stat-value">Zero</div>
+                    <div class="hero-stat-label">Conflicts</div>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat-item">
+                    <div class="hero-stat-value">Real-time</div>
+                    <div class="hero-stat-label">Sync</div>
+                </div>
+            </div>
+        </div>
 
-      <p>
-        Manage courses, instructors, and lectures easily with our scheduling platform.
-      </p>
-
-      <div class="buttons">
-        <a href="/login" class="login-btn">Login</a>
-        <a href="/signup" class="signup-btn">Sign Up</a>
-      </div>
-
-    </div>
-
-  </body>
+    </body>
 
 </html>
