@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body>
+
+    <%- include('../partials/sidebar') %>
+
+    <div class="main">
+        <%- include('../partials/topbar') %>
+
+        <div class="form-card-container">
+            <div class="table-container p-3">
+                <!-- Page Header -->
+                <div class="text-center mb-2">
+                    <div class="form-header-icon course flex-center" style="background: var(--amber-light); color: var(--amber);">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </div>
+                    <h2 class="form-title">Edit Course</h2>
+                    <p class="form-subtitle">Update course details and repository metadata</p>
+                </div>
+
+                <!-- Form -->
+                <form action="/admin/edit-course/<%= course._id %>" method="POST" enctype="multipart/form-data">
+                    <div class="grid-2 mb-1">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-signature text-primary-small"></i> Course Name</label>
+                            <input type="text" name="name" value="<%= course.name %>" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-layer-group text-primary-small"></i> Complexity</label>
+                            <select name="level" required>
+                                <option value="Beginner" <%= course.level === 'Beginner' ? 'selected' : '' %>>Beginner</option>
+                                <option value="Intermediate" <%= course.level === 'Intermediate' ? 'selected' : '' %>>Intermediate</option>
+                                <option value="Advanced" <%= course.level === 'Advanced' ? 'selected' : '' %>>Advanced</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-align-left text-primary-small"></i> Description</label>
+                        <textarea name="description" rows="4" style="resize: none;"><%= course.description %></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-image text-primary-small"></i> Banner Image</label>
+                        <div class="file-upload-box" onclick="document.getElementById('file-upload').click()">
+                            <% if (course.image) { %>
+                                <img src="<%= course.image %>" style="max-height: 100px; display: block; margin: 0 auto 10px; border-radius: 8px;">
+                            <% } else { %>
+                                <i class="fa-solid fa-cloud-arrow-up text-center mb-1 w-full" style="font-size: 2rem; color: var(--text-muted);"></i>
+                            <% } %>
+                            <label for="file-upload" class="cursor-pointer font-bold text-primary">Change Image</label>
+                            <input id="file-upload" name="image" type="file" style="display: none;" accept="image/*" onchange="document.getElementById('file-name').textContent = this.files[0].name; this.previousElementSibling.style.color='var(--primary)'">
+                            <p id="file-name" class="text-xs text-muted mt-1 font-semibold">PNG, JPG, WEBP up to 10MB</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-2">
+                        <button type="submit" class="btn-primary w-full py-1 text-lg shadow-primary">
+                            <i class="fa-solid fa-circle-check mr-1"></i> Update Course
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

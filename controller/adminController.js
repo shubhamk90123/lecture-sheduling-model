@@ -55,11 +55,16 @@ exports.getDashboard = async (req, res) => {
     const courses = await Course.find({}).lean();
     
     // Flatten lectures from all courses into a simple list
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     let allLectures = [];
     courses.forEach(c => {
       if (c.lectures) {
         c.lectures.forEach(l => {
-          allLectures.push({ ...l, courseName: c.name, courseCode: c.level });
+          if (new Date(l.date) >= today) {
+            allLectures.push({ ...l, courseName: c.name, courseCode: c.level });
+          }
         });
       }
     });
@@ -123,19 +128,66 @@ exports.allCourses = async (req, res) => {
   });
 };
 
+// Delete Course
+exports.deleteCourse = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Course.findByIdAndDelete(id);
+    res.redirect("/admin/viewCourses");
+  } catch (error) {
+    res.status(500).send("Error deleting course");
+  }
+};
+
+// Edit Course
+exports.getEditCourse = async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.id).lean();
+    res.render("admin/editCourse", {
+      role: "admin",
+      pageTitle: "Edit Course",
+      currentUserName: req.user?.name || "Admin",
+      course
+    });
+  } catch (error) {
+    res.status(500).send("Error loading edit course page");
+  }
+};
+
+exports.postEditCourse = async (req, res) => {
+  try {
+    const { name, level, description } = req.body;
+    const updateData = { name, level, description };
+    
+    if (req.file) {
+      updateData.image = `/uploads/${req.file.filename}`;
+    }
+
+    await Course.findByIdAndUpdate(req.params.id, updateData);
+    res.redirect("/admin/viewCourses");
+  } catch (error) {
+    res.status(500).send("Error updating course");
+  }
+};
+
 // Manage Lectures
 exports.manageLec = async (req, res) => {
   const courses = await Course.find({}).lean();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   let allLectures = [];
   courses.forEach(c => {
     (c.lectures || []).forEach(l => {
-      allLectures.push({ 
-        ...l, 
-        courseName: c.name, 
-        courseCode: c.level, 
-        courseId: c._id, 
-        lectureId: l._id 
-      });
+      if (new Date(l.date) >= today) {
+        allLectures.push({ 
+          ...l, 
+          courseName: c.name, 
+          courseCode: c.level, 
+          courseId: c._id, 
+          lectureId: l._id 
+        });
+      }
     });
   });
 
@@ -144,6 +196,35 @@ exports.manageLec = async (req, res) => {
     pageTitle: "Manage Lectures",
     currentUserName: req.user?.name || "Admin",
     lectureData: allLectures
+  });
+};
+
+// Previous Lectures
+exports.previousLec = async (req, res) => {
+  const courses = await Course.find({}).lean();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  let pastLectures = [];
+  courses.forEach(c => {
+    (c.lectures || []).forEach(l => {
+      if (new Date(l.date) < today) {
+        pastLectures.push({ 
+          ...l, 
+          courseName: c.name, 
+          courseCode: c.level, 
+          courseId: c._id, 
+          lectureId: l._id 
+        });
+      }
+    });
+  });
+
+  res.render("admin/previousLec", {
+    role: "admin",
+    pageTitle: "Previous Lectures",
+    currentUserName: req.user?.name || "Admin",
+    lectureData: pastLectures
   });
 };
 

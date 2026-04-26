@@ -59,10 +59,10 @@
                             </td>
                             <td style="text-align: right;">
                                 <div style="display: flex; gap: 8px; justify-content: flex-end;">
-                                    <a href="#" class="btn-primary" style="padding: 8px 14px; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; font-size: 0.85rem; box-shadow: none;">
+                                    <a href="/admin/edit-course/<%= course._id %>" class="btn-primary" style="padding: 8px 14px; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; font-size: 0.85rem; box-shadow: none;">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
-                                    <a href="#" class="btn-primary" style="padding: 8px 14px; background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; font-size: 0.85rem; box-shadow: none;" onclick="return confirm('Delete this course? This action cannot be undone.')">
+                                    <a href="/admin/delete-course/<%= course._id %>" class="btn-primary" style="padding: 8px 14px; background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; font-size: 0.85rem; box-shadow: none;" onclick="return confirm('Delete this course? This action cannot be undone.')">
                                         <i class="fa-solid fa-trash-can"></i>
                                     </a>
                                 </div>

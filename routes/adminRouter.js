@@ -9,12 +9,16 @@ const {
   viewInstructor,
   allCourses,
   manageLec,
+  previousLec,
   postaddCourse,
   getSheduleLec,
   postSheduleLec,
   profile,
   updateProfile,
   deleteLecture,
+  deleteCourse,
+  getEditCourse,
+  postEditCourse,
   getEditLecture,
   postEditLecture,
 } = require("../controller/adminController");
@@ -36,12 +40,16 @@ adminRouter.get("/viewInstructors", viewInstructor);
 adminRouter.get("/viewCourses", allCourses);
 
 adminRouter.get("/manageLecture", manageLec);
+adminRouter.get("/previousLecture", previousLec);
 
 adminRouter.get("/sheduleLec", getSheduleLec);
 
 adminRouter.post("/sheduleLec", postSheduleLec);
 
 adminRouter.get("/delete-lecture/:courseId/:lectureId", deleteLecture);
+adminRouter.get("/delete-course/:id", deleteCourse);
+adminRouter.get("/edit-course/:id", getEditCourse);
+adminRouter.post("/edit-course/:id", upload.single("image"), postEditCourse);
 adminRouter.get("/edit-lecture/:courseId/:lectureId", getEditLecture);
 adminRouter.post("/edit-lecture/:courseId/:lectureId", postEditLecture);
 
