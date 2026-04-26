@@ -4,7 +4,6 @@ const adminRouter = express.Router();
 const { requireRole } = require("../middleware/auth");
 const {
   getDashboard,
-  postDashboard,
   getaddCourse,
   viewInstructor,
   allCourses,
@@ -22,6 +21,7 @@ const {
   getEditLecture,
   postEditLecture,
 } = require("../controller/adminController");
+
 const upload = require("../utils/upload");
 
 adminRouter.use(requireRole("admin"));
@@ -29,6 +29,7 @@ adminRouter.use(requireRole("admin"));
 adminRouter.get("/dashboard", getDashboard);
 
 adminRouter.get("/profile", profile);
+
 adminRouter.post("/update-profile", updateProfile);
 
 adminRouter.get("/add-course", getaddCourse);
@@ -40,14 +41,15 @@ adminRouter.get("/viewInstructors", viewInstructor);
 adminRouter.get("/viewCourses", allCourses);
 
 adminRouter.get("/manageLecture", manageLec);
+
 adminRouter.get("/previousLecture", previousLec);
 
 adminRouter.get("/sheduleLec", getSheduleLec);
 
 adminRouter.post("/sheduleLec", postSheduleLec);
 
-adminRouter.get("/delete-lecture/:courseId/:lectureId", deleteLecture);
-adminRouter.get("/delete-course/:id", deleteCourse);
+adminRouter.post("/delete-lecture/:courseId/:lectureId", deleteLecture);
+adminRouter.post("/delete-course/:id", deleteCourse);
 adminRouter.get("/edit-course/:id", getEditCourse);
 adminRouter.post("/edit-course/:id", upload.single("image"), postEditCourse);
 adminRouter.get("/edit-lecture/:courseId/:lectureId", getEditLecture);

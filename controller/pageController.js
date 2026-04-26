@@ -25,6 +25,10 @@ exports.postSignup = async (req, res) => {
       return res.status(400).render("signup", { pageTitle: "Create Account", errorMessage: "All fields are required." });
     }
 
+    if (role.toLowerCase() !== "instructor") {
+      return res.status(403).render("signup", { pageTitle: "Create Account", errorMessage: "Only instructor accounts can be created via public signup." });
+    }
+
     const normalizedEmail = email.trim().toLowerCase();
     const userExists = await User.findOne({ email: normalizedEmail });
 
@@ -104,7 +108,7 @@ exports.postLogin = async (req, res) => {
 
     res.cookie("authToken", token, {
       httpOnly: true,
-      secure: false, // Set to true in production with HTTPS
+      secure: process.env.NODE_ENV === "production",
       sameSite: "Lax",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });

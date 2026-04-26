@@ -37,7 +37,11 @@ exports.updateProfile = async (req, res) => {
     await user.save();
     
     const token = jwt.sign({ userId: user._id, name: user.name, email: user.email, role: user.role }, JWT_SECRET);
-    res.cookie("authToken", token, { httpOnly: true });
+    res.cookie("authToken", token, { 
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Lax"
+    });
 
     res.render("profile", {
       role: "admin", pageTitle: "My Profile", currentUserName: user.name,

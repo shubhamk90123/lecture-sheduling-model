@@ -60,9 +60,11 @@
                             </td>
                             <td style="text-align: right;">
                                 <div style="display: flex; gap: 8px; justify-content: flex-end;">
-                                    <a href="/admin/delete-lecture/<%= lec.courseId %>/<%= lec.lectureId %>" class="btn-primary" style="padding: 6px 12px; background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; font-size: 0.75rem; box-shadow: none;" onclick="return confirm('Delete this record?')">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </a>
+                                    <form action="/admin/delete-lecture/<%= lec.courseId %>/<%= lec.lectureId %>" method="POST" style="display: inline;">
+                                        <button type="submit" class="btn-primary" style="padding: 6px 12px; background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; font-size: 0.75rem; box-shadow: none;" onclick="return confirm('Delete this record?')">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
