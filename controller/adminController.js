@@ -3,6 +3,9 @@ const Course = require("../model/course");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../middleware/auth");
+const { validationResult } = require("express-validator");
+const fs = require("fs");
+const path = require("path");
 
 
 
@@ -99,6 +102,16 @@ exports.getaddCourse = (req, res) => {
 };
 
 exports.postaddCourse = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render("admin/addCourse", {
+      role: "admin",
+      pageTitle: "Add Course",
+      currentUserName: req.user?.name || "Admin",
+      errorMessage: errors.array()[0].msg
+    });
+  }
+
   try {
     const { name, level, description } = req.body;
     const image = req.file ? `/uploads/${req.file.filename}` : "";
@@ -136,6 +149,15 @@ exports.allCourses = async (req, res) => {
 exports.deleteCourse = async (req, res) => {
   try {
     const { id } = req.params;
+    const course = await Course.findById(id);
+    
+    if (course && course.image) {
+      const imagePath = path.join(__dirname, "../public", course.image);
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
+    }
+
     await Course.findByIdAndDelete(id);
     res.redirect("/admin/viewCourses");
   } catch (error) {
@@ -319,6 +341,20 @@ exports.getSheduleLec = async (req, res) => {
 };
 
 exports.postSheduleLec = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const instructors = await User.find({ role: "instructor" }).lean();
+    const courses = await Course.find({}).lean();
+    return res.status(400).render("admin/sheduleLec", {
+      role: "admin", 
+      pageTitle: "Schedule Lecture", 
+      currentUserName: req.user?.name,
+      instructors, 
+      courseData: courses, 
+      errorMessage: errors.array()[0].msg
+    });
+  }
+
   try {
     const { courseName, instructor, duration, startDate } = req.body;
 

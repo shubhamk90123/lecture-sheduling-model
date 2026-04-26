@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const { JWT_SECRET } = require("../middleware/auth");
+const { validationResult } = require("express-validator");
 
 //Root page=================================================================================================
 exports.rootPage = (req, res) => {
@@ -18,15 +19,31 @@ exports.getSignup = (req, res) => {
 };
 
 exports.postSignup = async (req, res) => {
-  try {
-    const { name, email, password, role, contact, specialization } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render("signup", { 
+      pageTitle: "Create Account", 
+      errorMessage: errors.array()[0].msg 
+    });
+  }
 
-    if (!name || !email || !password || !role || !contact) {
+  try {
+    const { name, email, password, confirmPassword, role, contact, specialization } = req.body;
+
+    if (!name || !email || !password || !confirmPassword || !role || !contact) {
       return res.status(400).render("signup", { pageTitle: "Create Account", errorMessage: "All fields are required." });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).render("signup", { pageTitle: "Create Account", errorMessage: "Passwords do not match." });
     }
 
     if (role.toLowerCase() !== "instructor") {
       return res.status(403).render("signup", { pageTitle: "Create Account", errorMessage: "Only instructor accounts can be created via public signup." });
+    }
+
+    if (password.length < 8) {
+      return res.status(400).render("signup", { pageTitle: "Create Account", errorMessage: "Password must be at least 8 characters long." });
     }
 
     const normalizedEmail = email.trim().toLowerCase();

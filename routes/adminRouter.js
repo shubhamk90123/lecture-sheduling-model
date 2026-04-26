@@ -1,6 +1,7 @@
 //External Modules
 const express = require("express");
 const adminRouter = express.Router();
+const { body } = require("express-validator");
 const { requireRole } = require("../middleware/auth");
 const {
   getDashboard,
@@ -34,7 +35,16 @@ adminRouter.post("/update-profile", updateProfile);
 
 adminRouter.get("/add-course", getaddCourse);
 
-adminRouter.post("/add-course", upload.single("image"), postaddCourse);
+adminRouter.post(
+  "/add-course", 
+  upload.single("image"), 
+  [
+    body("name").trim().notEmpty().withMessage("Course name is required."),
+    body("level").isIn(["Beginner", "Intermediate", "Advanced"]).withMessage("Invalid complexity level."),
+    body("description").trim().notEmpty().withMessage("Description is required.")
+  ],
+  postaddCourse
+);
 
 adminRouter.get("/viewInstructors", viewInstructor);
 
@@ -46,7 +56,16 @@ adminRouter.get("/previousLecture", previousLec);
 
 adminRouter.get("/sheduleLec", getSheduleLec);
 
-adminRouter.post("/sheduleLec", postSheduleLec);
+adminRouter.post(
+  "/sheduleLec", 
+  [
+    body("courseName").notEmpty().withMessage("Course name is required."),
+    body("instructor").notEmpty().withMessage("Instructor is required."),
+    body("duration").isNumeric().withMessage("Duration must be a number."),
+    body("startDate").isDate().withMessage("Invalid date.")
+  ],
+  postSheduleLec
+);
 
 adminRouter.post("/delete-lecture/:courseId/:lectureId", deleteLecture);
 adminRouter.post("/delete-course/:id", deleteCourse);

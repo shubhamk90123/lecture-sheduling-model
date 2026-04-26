@@ -24,46 +24,46 @@
 
                     <button type="submit" class="w-full">Admin Sign In</button>
                     <p class="auth-footer-text">
-                        Don't have an account? <a href="/signup" style="color: var(--primary);">Sign Up</a>
-                    </p>
-                </form>
+                Don't have an account? <a href="/signup" class="text-primary">Sign Up</a>
+            </p>
+        </form>
+    </div>
+
+    <!-- Instructor Login Form -->
+    <div class="slider-form-container sign-in-panel">
+        <form action="/login" method="POST">
+            <div class="portal-header-icon instructor flex-center">
+                <i class="fa-solid fa-chalkboard-user"></i>
             </div>
+            <h1 class="auth-title">Instructor Portal</h1>
+            <p class="auth-subtitle">Schedule & Curriculum Access</p>
 
-            <!-- Instructor Login Form -->
-            <div class="slider-form-container sign-in-panel">
-                <form action="/login" method="POST">
-                    <div class="portal-header-icon instructor flex-center">
-                        <i class="fa-solid fa-chalkboard-user"></i>
-                    </div>
-                    <h1 class="auth-title">Instructor Portal</h1>
-                    <p class="auth-subtitle">Schedule & Curriculum Access</p>
+            <input type="email" name="email" placeholder="Instructor Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="hidden" name="portal" value="instructor">
 
-                    <input type="email" name="email" placeholder="Instructor Email" required>
-                    <input type="password" name="password" placeholder="Password" required>
-                    <input type="hidden" name="portal" value="instructor">
+            <button type="submit" class="w-full">Instructor Sign In</button>
+            <p class="auth-footer-text">
+                Don't have an account? <a href="/signup" style="color: #3f51b5;">Sign Up</a>
+            </p>
+        </form>
+    </div>
 
-                    <button type="submit" class="w-full">Instructor Sign In</button>
-                    <p class="auth-footer-text">
-                        Don't have an account? <a href="/signup" style="color: #3f51b5;">Sign Up</a>
-                    </p>
-                </form>
+    <!-- Toggle Overlay -->
+    <div class="toggle-slider-container">
+        <div class="toggle-content">
+            <div class="toggle-pane toggle-left-pane">
+                <h1 class="mb-1 font-800" style="font-size: 2rem;">Back to Instructors?</h1>
+                <p>Click below if you are a faculty member trying to access your schedule.</p>
+                <button class="hidden" id="login-btn">Instructor Portal</button>
             </div>
-
-            <!-- Toggle Overlay -->
-            <div class="toggle-slider-container">
-                <div class="toggle-content">
-                    <div class="toggle-pane toggle-left-pane">
-                        <h1 class="mb-1" style="font-weight: 800; font-size: 2rem;">Back to Instructors?</h1>
-                        <p>Click below if you are a faculty member trying to access your schedule.</p>
-                        <button class="hidden" id="login-btn">Instructor Portal</button>
-                    </div>
-                    <div class="toggle-pane toggle-right-pane">
-                        <h1 class="mb-1" style="font-weight: 800; font-size: 2rem;">Admin Access?</h1>
-                        <p>Click below to switch to the administrative management dashboard.</p>
-                        <button class="hidden" id="register-btn">Admin Portal</button>
-                    </div>
-                </div>
+            <div class="toggle-pane toggle-right-pane">
+                <h1 class="mb-1 font-800" style="font-size: 2rem;">Admin Access?</h1>
+                <p>Click below to switch to the administrative management dashboard.</p>
+                <button class="hidden" id="register-btn">Admin Portal</button>
             </div>
+        </div>
+    </div>
         </div>
 
         <!-- Error Toast -->
@@ -74,19 +74,6 @@
             </div>
             <% } %>
 
-                <script>
-                    const container = document.getElementById('slider-container');
-                    const registerBtn = document.getElementById('register-btn');
-                    const loginBtn = document.getElementById('login-btn');
-
-                    registerBtn.addEventListener('click', () => {
-                        container.classList.add("active");
-                    });
-
-                    loginBtn.addEventListener('click', () => {
-                        container.classList.remove("active");
-                    });
-                </script>
 
     </body>
 
