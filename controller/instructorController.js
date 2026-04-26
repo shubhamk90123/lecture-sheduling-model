@@ -30,7 +30,7 @@ exports.getDashboard = async (req, res) => {
 
     res.render("dashboard", {
       role: "instructor",
-      pageTitle: "Dashboard",
+      pageTitle: "Instructor Dashboard",
       currentUserName,
       instructors,
       lectureData: assignedLectures,

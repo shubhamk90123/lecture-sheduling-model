@@ -8,6 +8,12 @@
     <body class="auth-page">
 
         <div class="slider-container" id="slider-container">
+            <!-- Mobile Tabs (Hidden on Desktop) -->
+            <div class="mobile-tabs">
+                <button class="mobile-tab-btn active" data-target="instructor">Instructor</button>
+                <button class="mobile-tab-btn" data-target="admin">Admin</button>
+            </div>
+
             <!-- Admin Login Form -->
             <div class="slider-form-container sign-up-panel">
                 <form action="/login" method="POST">

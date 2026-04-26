@@ -38,6 +38,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Mobile Login Tabs Logic
+    const mobileTabs = document.querySelectorAll('.mobile-tab-btn');
+    if (mobileTabs.length > 0 && container) {
+        mobileTabs.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                mobileTabs.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                const target = btn.getAttribute('data-target');
+                if (target === 'admin') {
+                    container.classList.add("active");
+                } else {
+                    container.classList.remove("active");
+                }
+            });
+        });
+    }
+
     // Signup Specialization Toggle
     const roleSelect = document.getElementById('roleSelect');
     if (roleSelect) {

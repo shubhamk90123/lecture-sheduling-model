@@ -30,6 +30,7 @@ const authLimiter = rateLimit({
 app.use("/login", authLimiter);
 app.use("/signup", authLimiter);
 
+// View Engine
 app.set("view engine", "ejs");
 app.set("views", "views");
 

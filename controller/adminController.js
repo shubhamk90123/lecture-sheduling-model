@@ -78,7 +78,7 @@ exports.getDashboard = async (req, res) => {
 
     res.render("dashboard", {
       role: "admin",
-      pageTitle: "Dashboard",
+      pageTitle: "Admin Dashboard",
       currentUserName: req.user?.name || "Admin",
       instructors,
       courseData: courses,
@@ -292,6 +292,16 @@ exports.postEditLecture = async (req, res) => {
   try {
     const { courseId, lectureId } = req.params;
     const { instructor, duration, date } = req.body;
+    
+    if (duration > 120) {
+        const course = await Course.findById(courseId).lean();
+        const lecture = course.lectures.find(l => l._id.toString() === lectureId);
+        const instructors = await User.find({ role: "instructor" }).lean();
+        return res.render("admin/editLecture", {
+            role: "admin", pageTitle: "Edit Lecture", currentUserName: req.user?.name,
+            course, lecture, instructors, errorMessage: "Duration cannot exceed 120 minutes."
+        });
+    }
 
     // Logic: Don't allow past dates
     const today = new Date();
@@ -357,6 +367,15 @@ exports.postSheduleLec = async (req, res) => {
 
   try {
     const { courseName, instructor, duration, startDate } = req.body;
+
+    if (duration > 120) {
+      const instructors = await User.find({ role: "instructor" }).lean();
+      const courses = await Course.find({}).lean();
+      return res.render("admin/sheduleLec", {
+        role: "admin", pageTitle: "Schedule Lecture", currentUserName: req.user?.name,
+        instructors, courseData: courses, errorMessage: "Lecture duration cannot exceed 120 minutes."
+      });
+    }
 
     // Logic: Don't allow past dates
     const today = new Date();
