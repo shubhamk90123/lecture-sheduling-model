@@ -8,7 +8,7 @@
     "tailwind": "tailwindcss -i ./views/input.css -o ./public/output.css --watch",
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "build": "tailwindcss -i ./views/input.css -o ./public/output.css"
+    "build": "npx tailwindcss -i ./views/input.css -o ./public/output.css"
   },
   "engines": {
     "node": ">=18.0.0"
