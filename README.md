@@ -100,6 +100,6 @@ Contributions make the open-source community an amazing place to learn and creat
 ## 📧 Contact
 
 **Shubham Kumar**  
-LinkedIn: [shubhamk90123](https://www.linkedin.com/in/shubham-kumar-6b6a3b22a/)
+LinkedIn: [shubhamk90123](https://www.linkedin.com/in/shubham-kamble-1b5569289/)
 
 Project Link: [https://github.com/shubhamk90123/lecture-sheduling-model](https://github.com/shubhamk90123/lecture-sheduling-model)
