@@ -1,79 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <%- include('partials/head') %>
-</head>
-<body class="auth-page">
 
-    <div class="auth-card max-w-650">
-        <div class="portal-header-icon admin flex-center mx-auto mb-1 mt-0">
-            <i class="fa-solid fa-graduation-cap"></i>
-        </div>
-        <h1 class="auth-title">Create Account</h1>
-        <p class="auth-subtitle">Join the LMS Portal as an Instructor</p>
+    <head>
+        <%- include('partials/head') %>
+    </head>
 
-        <form action="/signup" method="POST">
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" name="name" placeholder="Enter your name" required>
-                </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" name="email" placeholder="Enter your email" required>
-                </div>
+    <body class="auth-page">
+
+        <div class="auth-card max-w-650">
+            <div class="portal-header-icon admin flex-center mx-auto mb-1 mt-0">
+                <i class="fa-solid fa-graduation-cap"></i>
             </div>
+            <h1 class="auth-title">Create Account</h1>
+            <p class="auth-subtitle">Join the LMS Portal as an Instructor</p>
 
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" name="password" placeholder="Min 8 characters" minlength="8" required>
+            <form action="/signup" method="POST">
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" name="name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" placeholder="Enter your email" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Confirm Password</label>
-                    <input type="password" name="confirmPassword" placeholder="Repeat password" required>
-                </div>
-            </div>
 
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>Account Role</label>
-                    <select name="role" id="roleSelect">
-                        <option value="instructor">Instructor</option>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" placeholder="Min 8 characters" minlength="8" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" name="confirmPassword" placeholder="Repeat password" required>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Account Role</label>
+                        <select name="role" id="roleSelect">
+                            <option value="" selected>Select The Role </option>
+                            <option value="instructor">Instructor</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Number</label>
+                        <input type="text" name="contact" placeholder="10-digit mobile number" required>
+                    </div>
+                </div>
+
+                <div class="form-group mb-2" id="specializationGroup" style="display: none;">
+                    <label>Instructor Specialization</label>
+                    <select name="specialization" id="specializationSelect">
+                        <option value="">Select your field</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Management">Management</option>
+                        <option value="Design">Design</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Contact Number</label>
-                    <input type="text" name="contact" placeholder="10-digit mobile number" required>
-                </div>
-            </div>
 
-            <div class="form-group mb-2" id="specializationGroup" style="display: none;">
-                <label>Instructor Specialization</label>
-                <select name="specialization" id="specializationSelect">
-                    <option value="">Select your field</option>
-                    <option value="Computer Science">Computer Science</option>
-                    <option value="Mathematics">Mathematics</option>
-                    <option value="Physics">Physics</option>
-                    <option value="Management">Management</option>
-                    <option value="Design">Design</option>
-                </select>
-            </div>
+                <button type="submit" class="btn-primary w-full mt-1">Sign Up Now</button>
 
-            <button type="submit" class="btn-primary w-full mt-1">Sign Up Now</button>
-            
-            <p class="auth-footer-text">
-                Already registered? <a href="/login" class="text-primary">Log In</a>
-            </p>
-        </form>
-    </div>
-
-
-    <% if (typeof errorMessage !== "undefined" && errorMessage) { %>
-        <div class="toast-error">
-            <i class="fa-solid fa-circle-exclamation" style="margin-right: 10px;"></i> <%= errorMessage %>
+                <p class="auth-footer-text">
+                    Already registered? <a href="/login" class="text-primary">Log In</a>
+                </p>
+            </form>
         </div>
-    <% } %>
 
-</body>
+
+        <% if (typeof errorMessage !=="undefined" && errorMessage) { %>
+            <div class="toast-error">
+                <i class="fa-solid fa-circle-exclamation" style="margin-right: 10px;"></i>
+                <%= errorMessage %>
+            </div>
+            <% } %>
+
+    </body>
+
 </html>

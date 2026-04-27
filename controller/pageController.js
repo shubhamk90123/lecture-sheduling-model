@@ -38,8 +38,12 @@ exports.postSignup = async (req, res) => {
       return res.status(400).render("signup", { pageTitle: "Create Account", errorMessage: "Passwords do not match." });
     }
 
-    if (role.toLowerCase() !== "instructor") {
-      return res.status(403).render("signup", { pageTitle: "Create Account", errorMessage: "Only instructor accounts can be created via public signup." });
+    const allowedRoles = ["instructor", "admin"];
+    if (!allowedRoles.includes(role.toLowerCase())) {
+      return res.status(403).render("signup", { 
+        pageTitle: "Create Account", 
+        errorMessage: "Invalid role selected." 
+      });
     }
 
     if (password.length < 8) {
