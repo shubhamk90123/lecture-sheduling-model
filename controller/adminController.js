@@ -317,6 +317,32 @@ exports.postEditLecture = async (req, res) => {
     }
 
     const instructorUser = await User.findOne({ name: instructor });
+    if (!instructorUser) {
+        const course = await Course.findById(courseId).lean();
+        const lecture = course.lectures.find(l => l._id.toString() === lectureId);
+        const instructors = await User.find({ role: "instructor" }).lean();
+        return res.render("admin/editLecture", {
+            role: "admin", pageTitle: "Edit Lecture", currentUserName: req.user?.name,
+            course, lecture, instructors, errorMessage: "Instructor not found."
+        });
+    }
+
+    // Check for conflicts on this date for this instructor (excluding this specific lecture)
+    const conflict = await Course.findOne({
+      "lectures.instructorId": instructorUser._id,
+      "lectures.date": date,
+      "lectures._id": { $ne: lectureId }
+    });
+
+    if (conflict) {
+        const course = await Course.findById(courseId).lean();
+        const lecture = course.lectures.find(l => l._id.toString() === lectureId);
+        const instructors = await User.find({ role: "instructor" }).lean();
+        return res.render("admin/editLecture", {
+            role: "admin", pageTitle: "Edit Lecture", currentUserName: req.user?.name,
+            course, lecture, instructors, errorMessage: "Instructor is already busy on this date."
+        });
+    }
     
     await Course.updateOne(
       { _id: courseId, "lectures._id": lectureId },

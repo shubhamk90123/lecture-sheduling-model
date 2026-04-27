@@ -14,11 +14,11 @@ exports.getDashboard = async (req, res) => {
     const instructors = await User.find({ role: "instructor" }).lean();
     
     // Find lectures for this instructor
-    const courses = await Course.find({ "lectures.instructorName": currentUserName }).lean();
+    const courses = await Course.find({ "lectures.instructorId": req.user.userId }).lean();
     let assignedLectures = [];
     courses.forEach(c => {
       c.lectures.forEach(l => {
-        if (l.instructorName === currentUserName) {
+        if (l.instructorId && l.instructorId.toString() === req.user.userId) {
           assignedLectures.push({ ...l, courseName: c.name, courseCode: c.level });
         }
       });
@@ -64,6 +64,7 @@ exports.profile = async (req, res) => {
 exports.updateProfile = async (req, res) => {
   try {
     const { name, email, specialization, phone, currentPassword, newPassword, confirmNewPassword } = req.body;
+    // Explicitly select password to ensure it's available for comparison
     const user = await User.findById(req.user?.userId);
 
     // Basic validation
@@ -100,13 +101,23 @@ exports.updateProfile = async (req, res) => {
 
     await user.save();
 
-    // Refresh token
-    const token = jwt.sign({ userId: user._id, name: user.name, email: user.email, role: user.role }, JWT_SECRET);
-    res.cookie("authToken", token, { httpOnly: true });
+    // Refresh token with updated info
+    const token = jwt.sign({ 
+      userId: user._id, 
+      name: user.name, 
+      email: user.email, 
+      role: user.role 
+    }, JWT_SECRET);
+    
+    res.cookie("authToken", token, { 
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Lax"
+    });
 
     res.render("profile", {
       role: "instructor", pageTitle: "My Profile", currentUserName: user.name,
-      currentUser: user.toObject(), errorMessage: "", successMessage: "Profile updated!"
+      currentUser: user.toObject(), errorMessage: "", successMessage: "Profile updated successfully!"
     });
   } catch (error) {
     res.status(500).send("Error updating profile");
@@ -115,19 +126,21 @@ exports.updateProfile = async (req, res) => {
 
 // My Lectures
 exports.lectures = async (req, res) => {
-  const name = req.user?.name;
-  const courses = await Course.find({ "lectures.instructorName": name }).lean();
+  const instructorId = req.user?.userId;
+  const courses = await Course.find({ "lectures.instructorId": instructorId }).lean();
   let myLecs = [];
   courses.forEach(c => {
     c.lectures.forEach(l => {
-      if (l.instructorName === name) myLecs.push({ ...l, courseName: c.name, courseCode: c.level });
+      if (l.instructorId && l.instructorId.toString() === instructorId) {
+        myLecs.push({ ...l, courseName: c.name, courseCode: c.level });
+      }
     });
   });
 
   res.render("instructor/myLectures", {
     role: "instructor",
     pageTitle: "My Lectures",
-    currentUserName: name,
+    currentUserName: req.user?.name,
     lectureData: myLecs
   });
 };

@@ -15,7 +15,17 @@ const connectDB = require("./utils/db");
 connectDB();
 
 // Security Headers
-app.use(helmet());
+// Security Headers
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+      "img-src": ["'self'", "data:", "https:"],
+      "script-src": ["'self'", "'unsafe-inline'"],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+}));
 
 
 // Compression
@@ -70,9 +80,32 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   logger.error(`${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
   const statusCode = err.statusCode || 500;
+  
+  // If user is authenticated, we should probably show an error on the portal they are in
+  const pageTitle = "Error";
+  const errorMessage = process.env.NODE_ENV === 'production' ? "An unexpected error occurred." : err.message;
+
+  if (req.user) {
+    return res.status(statusCode).render("dashboard", {
+      role: req.user.role,
+      pageTitle,
+      errorMessage,
+      currentUserName: req.user.name,
+      // Provide defaults for dashboard variables to prevent crashes
+      instructors: [],
+      courseData: [],
+      lectureData: [],
+      totalCourses: 0,
+      totalInstructors: 0,
+      totalSheduleLec: 0,
+      upcomingLectures: 0,
+      pastLectures: 0
+    });
+  }
+
   res.status(statusCode).render("login", { 
-    pageTitle: "Error", 
-    errorMessage: process.env.NODE_ENV === 'production' ? "An unexpected error occurred." : err.message 
+    pageTitle, 
+    errorMessage 
   });
 });
 

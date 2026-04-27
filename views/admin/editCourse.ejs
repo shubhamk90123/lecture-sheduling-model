@@ -46,16 +46,19 @@
 
                     <div class="form-group">
                         <label><i class="fa-solid fa-image text-primary-small"></i> Banner Image</label>
-                        <div class="file-upload-box" onclick="document.getElementById('file-upload').click()">
+                        <label class="file-upload-box" for="file-upload">
                             <% if (course.image) { %>
-                                <img src="<%= course.image %>" style="max-height: 100px; display: block; margin: 0 auto 10px; border-radius: 8px;">
+                                <div class="image-preview-container" style="display: block;">
+                                    <img src="<%= course.image %>" alt="Current Banner">
+                                </div>
                             <% } else { %>
-                                <i class="fa-solid fa-cloud-arrow-up text-center mb-1 w-full" style="font-size: 2rem; color: var(--text-muted);"></i>
+                                <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
                             <% } %>
-                            <label for="file-upload" class="cursor-pointer font-bold text-primary">Change Image</label>
-                            <input id="file-upload" name="image" type="file" style="display: none;" accept="image/*" onchange="document.getElementById('file-name').textContent = this.files[0].name; this.previousElementSibling.style.color='var(--primary)'">
-                            <p id="file-name" class="text-xs text-muted mt-1 font-semibold">PNG, JPG, WEBP up to 10MB</p>
-                        </div>
+                            <span class="upload-label"><%= course.image ? 'Change Banner' : 'Choose Course Banner' %></span>
+                            <input id="file-upload" name="image" type="file" style="display: none;" accept="image/*" 
+                                onchange="if(this.files[0]) document.getElementById('file-name').textContent = 'Selected: ' + this.files[0].name">
+                            <p id="file-name" class="mt-1">PNG, JPG, WEBP up to 10MB</p>
+                        </label>
                     </div>
 
                     <div class="mt-2">
